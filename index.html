@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StockSim -- Learn to Trade</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-body">
+
+  <div class="scanlines"></div>
+  <div class="noise-overlay"></div>
+
+  <div class="auth-container">
+
+    <div class="auth-brand">
+      <div class="brand-ticker-wrap">
+        <span class="brand-prefix">$</span><span class="brand-name">STOCKSIM</span>
+      </div>
+      <p class="brand-tagline">Paper trading for the next generation.</p>
+      <div class="brand-stats-row">
+        <div class="bstat"><span class="bstat-val">ACTIVE</span><span class="bstat-lbl">Traders</span></div>
+        <div class="bstat"><span class="bstat-val">ONLINE</span><span class="bstat-lbl">Engine Status</span></div>
+        <div class="bstat"><span class="bstat-val">$10,000</span><span class="bstat-lbl">Starting Cash</span></div>
+      </div>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="login">Sign In</button>
+        <button class="auth-tab" data-tab="register">Create Account</button>
+      </div>
+
+      <div class="auth-form" id="tab-login">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input class="form-input" type="text" id="login-username" placeholder="your_handle" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <input class="form-input" type="password" id="login-password" placeholder="**********" autocomplete="current-password" />
+            <button class="toggle-pw" type="button" data-target="login-password">SHOW</button>
+          </div>
+        </div>
+        <div class="form-error hidden" id="login-error"></div>
+        <button class="btn-primary" id="btn-login">Sign In</button>
+      </div>
+
+      <div class="auth-form hidden" id="tab-register">
+        <div class="form-group">
+          <label class="form-label">Username <span class="label-note">(visible to others)</span></label>
+          <input class="form-input" type="text" id="reg-username" placeholder="cool_trader" autocomplete="username" maxlength="20" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Display Name</label>
+          <input class="form-input" type="text" id="reg-display" placeholder="Alex Smith" maxlength="30" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <input class="form-input" type="password" id="reg-password" placeholder="min 8 characters" autocomplete="new-password" />
+            <button class="toggle-pw" type="button" data-target="reg-password">SHOW</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password</label>
+          <div class="input-wrap">
+            <input class="form-input" type="password" id="reg-confirm" placeholder="same as above" autocomplete="new-password" />
+            <button class="toggle-pw" type="button" data-target="reg-confirm">SHOW</button>
+          </div>
+        </div>
+        <div class="form-error hidden" id="reg-error"></div>
+        <div class="form-success hidden" id="reg-success"></div>
+        <button class="btn-primary" id="btn-register">Create Account and Get $10,000</button>
+      </div>
+    </div>
+
+    <div class="auth-disclaimer">
+      StockSim uses fake money only. No real investments, no real risk. Built for learning.
+    </div>
+
+  </div>
+
+  <div class="ticker-tape-wrap">
+    <div class="ticker-tape" id="ticker-tape">
+      <span class="tt-item loading">Loading market data...</span>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/ticker.js"></script>
+</body>
+</html>
