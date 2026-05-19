@@ -9,7 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
   
   <style>
+    /* ============================================================
+       CORE SYSTEM STYLES (THEME AGNOSTIC VARIABLE MAP)
+       ============================================================ */
     :root {
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-mono:    'Share Tech Mono', monospace;
+      --font-body:    'DM Sans', sans-serif;
+      --sidebar-w: 220px;
+      --radius:    4px;
+      --radius-lg: 8px;
+      --transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      --red:         #ff3860;
+      --red-glow:    rgba(255, 56, 96, 0.15);
+    }
+
+    /* DARK MASTER THEME */
+    [data-theme="dark"] {
       --bg:          #080c0f;
       --bg-card:     #0d1117;
       --bg-elevated: #111820;
@@ -23,15 +39,25 @@
       --accent:      #00ff88;
       --accent-dim:  #00cc6a;
       --accent-glow: rgba(0, 255, 136, 0.15);
-      --red:         #ff3860;
-      --red-glow:    rgba(255, 56, 96, 0.15);
-      --font-display: 'Bebas Neue', sans-serif;
-      --font-mono:    'Share Tech Mono', monospace;
-      --font-body:    'DM Sans', sans-serif;
-      --sidebar-w: 220px;
-      --radius:    4px;
-      --radius-lg: 8px;
-      --transition: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+      --tv-theme: "dark";
+    }
+
+    /* LIGHT MASTER THEME */
+    [data-theme="light"] {
+      --bg:          #f4f7f9;
+      --bg-card:     #ffffff;
+      --bg-elevated: #eef2f6;
+      --bg-input:    #f8fafc;
+      --bg-hover:    #edf2f7;
+      --border:      #cbd5e1;
+      --border-bright: #94a3b8;
+      --text-primary:   #0f172a;
+      --text-secondary: #475569;
+      --text-dim:       #64748b;
+      --accent:      #10b981;
+      --accent-dim:  #059669;
+      --accent-glow: rgba(16, 185, 129, 0.15);
+      --tv-theme: "light";
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,14 +70,15 @@
       min-height: 100vh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      transition: background var(--transition), color var(--transition);
     }
 
     .scanlines {
       position: fixed; inset: 0; z-index: 1000; pointer-events: none;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
     }
     .noise-overlay {
-      position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.025;
+      position: fixed; inset: 0; z-index: 999; pointer-events: none; opacity: 0.015;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
 
@@ -59,7 +86,7 @@
     .hidden { display: none !important; }
 
     .auth-screen { display: flex; align-items: center; justify-content: center; width: 100vw; min-height: 100vh; padding: 1rem; }
-    .auth-box { width: min(450px, 100%); background: var(--bg-card); border: 1px solid var(--border); padding: 2rem; border-radius: var(--radius-lg); }
+    .auth-box { width: min(450px, 100%); background: var(--bg-card); border: 1px solid var(--border); padding: 2rem; border-radius: var(--radius-lg); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
     .brand-header { text-align: center; margin-bottom: 2rem; }
     .brand-title { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 0.1em; color: var(--text-primary); }
     .brand-title span { color: var(--accent); }
@@ -76,7 +103,7 @@
       display: flex; flex-direction: column; padding: 1.5rem 1rem; position: fixed; top: 0; bottom: 34px; left: 0; z-index: 100;
     }
     .sidebar-user { padding: 0.75rem; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.5rem; }
-    .u-display { font-size: 0.9rem; font-weight: bold; color: var(--text-primary); display: block; }
+    .u-display { font-size: 0.9rem; font-weight: bold; color: var(--text-primary); display: block; overflow: hidden; text-overflow: ellipsis; }
     .u-handle { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
     .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; flex-grow: 1; }
     .nav-btn {
@@ -85,7 +112,7 @@
     }
     .nav-btn:hover, .nav-btn.active { color: var(--accent); background: var(--bg-hover); }
     .nav-btn.active { border-left: 3px solid var(--accent); padding-left: 1rem; }
-    .btn-logout { background: transparent; border: 1px solid var(--border); color: var(--red); padding: 0.5rem; font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer; border-radius: var(--radius); }
+    .btn-logout { background: transparent; border: 1px solid var(--border); color: var(--red); padding: 0.5rem; font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer; border-radius: var(--radius); margin-top: auto; }
     
     .workspace { flex-grow: 1; margin-left: var(--sidebar-w); padding: 2rem 2rem 5rem 2rem; width: calc(100% - var(--sidebar-w)); }
     .view-header { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-start; }
@@ -93,7 +120,7 @@
     .view-sub { color: var(--text-secondary); font-size: 0.85rem; }
 
     .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
-    .card-title { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.05em; margin-bottom: 1rem; color: var(--text-primary); }
+    .card-title { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.05em; margin-bottom: 1rem; color: var(--text-primary); text-transform: uppercase; }
     .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
     .kpi-card { background: var(--bg-card); border: 1px solid var(--border); padding: 1.25rem; border-radius: var(--radius-lg); }
     
@@ -108,6 +135,23 @@
     }
     .help-tooltip:hover { background: var(--accent); color: #000; }
 
+    .filter-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .filter-btn {
+      background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-secondary);
+      padding: 0.4rem 0.8rem; border-radius: var(--radius); font-family: var(--font-mono); font-size: 0.75rem;
+      cursor: pointer; transition: all var(--transition);
+    }
+    .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--bg-hover); }
+
+    .trending-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .trend-pill {
+      background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 0.6rem; text-align: center; cursor: pointer; transition: all var(--transition);
+    }
+    .trend-pill:hover { border-color: var(--accent); background: var(--bg-hover); }
+    .trend-pill .t-sym { font-family: var(--font-mono); font-weight: bold; color: var(--accent); block-size: auto; }
+    .trend-pill .t-lbl { font-size: 0.7rem; color: var(--text-dim); margin-top: 0.15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
     .form-group { margin-bottom: 1.25rem; }
     .form-label { display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.4rem; }
     .form-input { width: 100%; background: var(--bg-input); color: var(--text-primary); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 0.9rem; font-family: var(--font-mono); outline: none; }
@@ -117,8 +161,11 @@
     .form-range-input { flex-grow: 1; accent-color: var(--accent); height: 6px; background: var(--bg-input); border-radius: 3px; cursor: pointer; }
     .slider-max-lbl { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); background: var(--bg-elevated); padding: 0.2rem 0.5rem; border: 1px solid var(--border); border-radius: 2px; }
 
-    .btn-primary { width: 100%; background: var(--accent); color: #000; border: none; padding: 0.85rem; font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.1em; cursor: pointer; border-radius: var(--radius); font-weight: bold; }
+    .btn-primary { width: 100%; background: var(--accent); color: #000; border: none; padding: 0.85rem; font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.1em; cursor: pointer; border-radius: var(--radius); font-weight: bold; text-transform: uppercase; }
     .btn-primary:hover { background: var(--accent-dim); }
+    .btn-danger { width: 100%; background: var(--red); color: #fff; border: none; padding: 0.85rem; font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.1em; cursor: pointer; border-radius: var(--radius); font-weight: bold; text-transform: uppercase; }
+    .btn-danger:hover { opacity: 0.9; }
+
     .form-error { background: rgba(255,56,96,0.1); border-left: 3px solid var(--red); color: #ff8099; font-family: var(--font-mono); font-size: 0.8rem; padding: 0.65rem; margin-bottom: 1rem; border-radius: var(--radius); }
 
     .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -136,7 +183,6 @@
     .loss { color: var(--red); }
 
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    
     .trade-layout-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 1.5rem; }
     .trade-toggle { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg-input); padding: 0.2rem; border-radius: var(--radius); margin-bottom: 1rem; border: 1px solid var(--border); }
     .toggle-btn { background: transparent; border: none; color: var(--text-dim); padding: 0.5rem; font-family: var(--font-display); font-size: 1rem; cursor: pointer; border-radius: 2px; }
@@ -152,20 +198,18 @@
     .chart-box-wrapper { width: 100%; height: 380px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; align-items: center; justify-content: center; }
     .search-container { position: relative; }
 
+    /* Theme Switcher Toggle Pill */
+    .theme-switch-row { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius); }
+
     @media (max-width: 850px) {
       html { font-size: 14px; }
       .app-container { flex-direction: column; }
-      
-      .sidebar {
-        width: 100%; height: auto; position: static; border-right: none;
-        border-bottom: 1px solid var(--border); padding: 1rem; bottom: auto;
-      }
+      .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; bottom: auto; }
       .sidebar-user { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0.5rem 0.75rem; }
       .nav-list { flex-direction: row; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 1rem; }
       .nav-btn { text-align: center; padding: 0.5rem; font-size: 0.8rem; background: var(--bg-input); border: 1px solid var(--border); }
       .nav-btn.active { border-left: none; border-top: 3px solid var(--accent); padding-left: 0.5rem; }
-      .btn-logout { width: 100%; }
-
+      .btn-logout { width: 100%; margin-top: 0.5rem; }
       .workspace { margin-left: 0; width: 100%; padding: 1.5rem 1rem 5rem 1rem; }
       .trade-layout-grid { grid-template-columns: 1fr; }
       .two-col { grid-template-columns: 1fr; }
@@ -174,7 +218,7 @@
     }
   </style>
 </head>
-<body>
+<body data-theme="dark">
 
   <div class="scanlines"></div>
   <div class="noise-overlay"></div>
@@ -236,6 +280,7 @@
         <li><button class="nav-btn" data-target="view-trade">TRADE STATION</button></li>
         <li><button class="nav-btn" data-target="view-history">TRANSACTION HISTORY</button></li>
         <li><button class="nav-btn" data-target="view-leaderboard">LEADERBOARD</button></li>
+        <li><button class="nav-btn" data-target="view-settings">SETTINGS</button></li>
       </ul>
       <button class="btn-logout" id="btn-logout-action">LOG OUT</button>
     </nav>
@@ -283,36 +328,11 @@
               <thead>
                 <tr>
                   <th>Stock/Index</th>
-                  <th>
-                    <div class="flex-th">
-                      Shares Owned
-                      <span class="help-tooltip" title="The specific amount or fraction of a stock item that you currently hold.">?</span>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="flex-th">
-                      Avg Cost Paid
-                      <span class="help-tooltip" title="The average price you paid to purchase these shares. Used to see if you are up or down.">?</span>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="flex-th">
-                      Current Price
-                      <span class="help-tooltip" title="The live cost of 1 share right now on the open stock exchange.">?</span>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="flex-th">
-                      Current Value
-                      <span class="help-tooltip" title="What your investment is worth right now if you sell it (Shares Owned multiplied by Current Price).">?</span>
-                    </div>
-                  </th>
-                  <th>
-                    <div class="flex-th">
-                      Total Gain / Loss
-                      <span class="help-tooltip" title="Your live profit or loss on this specific stock. Green means up; Red means down.">?</span>
-                    </div>
-                  </th>
+                  <th><div class="flex-th">Shares Owned<span class="help-tooltip" title="The specific amount or fraction of a stock item that you currently hold.">?</span></div></th>
+                  <th><div class="flex-th">Avg Cost Paid<span class="help-tooltip" title="The average price you paid to purchase these shares. Used to see if you are up or down.">?</span></div></th>
+                  <th><div class="flex-th">Current Price<span class="help-tooltip" title="The live cost of 1 share right now on the open stock exchange.">?</span></div></th>
+                  <th><div class="flex-th">Current Value<span class="help-tooltip" title="What your investment is worth right now if you sell it (Shares Owned multiplied by Current Price).">?</span></div></th>
+                  <th><div class="flex-th">Total Gain / Loss<span class="help-tooltip" title="Your live profit or loss on this specific stock. Green means up; Red means down.">?</span></div></th>
                 </tr>
               </thead>
               <tbody id="portfolio-positions-table"></tbody>
@@ -326,6 +346,17 @@
           <div><h1 class="view-title">Trade station</h1><p class="view-sub">Search global assets in plain English (AI handles the rest)</p></div>
           <div style="font-family: var(--font-mono); background: var(--bg-card); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: var(--radius);" id="trade-cash-badge">Available Cash: $--</div>
         </div>
+        
+        <div class="filter-strip" id="market-category-filters">
+          <button class="filter-btn active" data-filter="all">ALL DEPT</button>
+          <button class="filter-btn" data-filter="us">US STOCKS</button>
+          <button class="filter-btn" data-filter="india">INDIAN OPEN NSE</button>
+          <button class="filter-btn" data-filter="indices">INDICES</button>
+        </div>
+
+        <div class="trending-grid" id="trending-shortcuts-container">
+          </div>
+
         <div class="card search-card">
           <div class="form-group search-container">
             <label class="form-label">Search anything (e.g. "nvidia price", "what is apple stock doing", "nasdaq index")</label>
@@ -350,7 +381,6 @@
           </div>
 
           <div class="trade-layout-grid">
-            
             <div class="card" style="display: flex; flex-direction: column;">
               <h3 class="card-title">Realtime Market Chart</h3>
               <div class="chart-box-wrapper" id="tradingview-chart-container">
@@ -380,15 +410,11 @@
 
                 <div style="background: var(--bg-input); padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.25rem; font-family: var(--font-mono); font-size: 0.85rem;">
                   <div style="display:flex; justify-content: space-between; margin-bottom: 0.4rem;">
-                    <span style="display:inline-flex; align-items:center; gap:0.35rem;" id="calc-preview-label">
-                      Total Estimated Cost
-                    </span>
+                    <span style="display:inline-flex; align-items:center; gap:0.35rem;" id="calc-preview-label">Total Estimated Value</span>
                     <span id="prev-cost">$0.00</span>
                   </div>
                   <div style="display:flex; justify-content: space-between; border-top: 1px dashed var(--border-bright); padding-top: 0.4rem;">
-                    <span style="display:inline-flex; align-items:center; gap:0.35rem;">
-                      Leftover Cash Balance
-                    </span>
+                    <span style="display:inline-flex; align-items:center; gap:0.35rem;">Leftover Cash Balance</span>
                     <span id="prev-residual">$--</span>
                   </div>
                 </div>
@@ -398,14 +424,25 @@
               <div class="card">
                 <h3 class="card-title">Market Details</h3>
                 <div style="display:grid; grid-template-columns: 1fr; gap:0.5rem; font-family:var(--font-mono); font-size:0.85rem;">
-                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;"><span>Current Market Price:</span><span id="t-stat-price">--</span></div>
-                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;"><span>Day Low:</span><span id="t-stat-low">--</span></div>
-                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;"><span>Day High:</span><span id="t-stat-high">--</span></div>
-                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;"><span>Ticker Tracking Tag:</span><span id="t-stat-rawtoken" style="color: var(--text-secondary); font-size: 0.75rem;">--</span></div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;">
+                    <span>Current Spot Price: <span class="help-tooltip" title="The exact realtime evaluation mark of 1 share units layout right now.">?</span></span>
+                    <span id="t-stat-price">--</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;">
+                    <span>Session Floor (Low): <span class="help-tooltip" title="The lowest traded threshold hit during today's current open hours calendar.">?</span></span>
+                    <span id="t-stat-low">--</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;">
+                    <span>Session Ceiling (High): <span class="help-tooltip" title="The absolute peak transaction cost value verified today.">?</span></span>
+                    <span id="t-stat-high">--</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.5rem 0;">
+                    <span>Ticker Tracking Tag:</span>
+                    <span id="t-stat-rawtoken" style="color: var(--text-secondary); font-size: 0.75rem;">--</span>
+                  </div>
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -449,6 +486,37 @@
           </div>
         </div>
       </section>
+
+      <section id="view-settings" class="view-panel hidden">
+        <div class="view-header">
+          <div><h1 class="view-title">Control Settings</h1><p class="view-sub">Manage profile system keys and display interfaces</p></div>
+        </div>
+        
+        <div class="two-col">
+          <div class="card">
+            <h3 class="card-title">Interface Theme</h3>
+            <div class="form-group">
+              <div class="theme-switch-row">
+                <span style="font-family: var(--font-mono); font-size: 0.85rem;">Light/Dark Mode Tweak</span>
+                <select id="setting-theme-select" class="form-input" style="width: auto; padding: 0.4rem 1rem;">
+                  <option value="dark">Brutalist Dark</option>
+                  <option value="light">Solarized Light</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Update Profile Data</h3>
+            <div class="form-group">
+              <label class="form-label">Change Display Signature</label>
+              <input type="text" class="form-input" id="setting-display-name" placeholder="New signature name" />
+            </div>
+            <button class="btn-primary" id="btn-save-settings" style="padding: 0.6rem;">SAVE PROFILE</button>
+          </div>
+        </div>
+      </section>
+
     </main>
 
     <div class="ticker-tape-wrap"><div class="ticker-tape" id="app-ticker-tape-container"></div></div>
@@ -457,13 +525,45 @@
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
   <script>
+    // PRE-DEFINED TRENDING STOCK DATABASE REPOSITORY
+    const TRENDING_DB = [
+      { sym: "AAPL", name: "Apple Inc.", cat: "us" },
+      { sym: "NVDA", name: "NVIDIA Corp.", cat: "us" },
+      { sym: "TSLA", name: "Tesla Motors", cat: "us" },
+      { sym: "AMZN", name: "Amazon Com", cat: "us" },
+      { sym: "RELIANCE.NS", name: "Reliance Industries", cat: "india" },
+      { sym: "TCS.NS", name: "Tata Consultancy", cat: "india" },
+      { sym: "INFY.NS", name: "Infosys Ltd", cat: "india" },
+      { sym: "^IXIC", name: "NASDAQ Index", cat: "indices" },
+      { sym: "^NSEI", name: "NIFTY 50", cat: "indices" }
+    ];
+
     const App = {
       activeUser: null,
       tradeMode: "buy",
       tradeAsset: null,
+      currentFilter: "all",
 
-      init() {
+      async init() {
         this.renderTickerTape();
+        this.renderTrendingShortcuts();
+        
+        // Initialize Theme Engine
+        const savedTheme = localStorage.getItem("stocksim-theme") || "dark";
+        document.body.setAttribute("data-theme", savedTheme);
+        document.getElementById("setting-theme-select").value = savedTheme;
+
+        // AUTH AUTO-SESSION RESTORATION CHECK
+        try {
+          const res = await fetch('/api/user/portfolio');
+          if (res.ok) {
+            // Fake profile state loading from safe portfolio sync
+            this.activeUser = { username: "active_user", displayName: "Trader Account", cash: 10000.00 };
+            this.bootToAppWorkspace();
+            return;
+          }
+        } catch(e) {}
+
         this.switchAuthTab("login");
       },
 
@@ -531,6 +631,7 @@
         document.getElementById("screen-app").classList.remove("hidden");
         document.getElementById("sb-user-display").textContent = this.activeUser.displayName;
         document.getElementById("sb-user-handle").textContent = "@" + this.activeUser.username;
+        document.getElementById("setting-display-name").value = this.activeUser.displayName;
         this.switchWorkspaceView("view-portfolio");
       },
 
@@ -555,7 +656,6 @@
 
         this.activeUser.cash = totals.cash;
 
-        // Portfolio overview figures are primarily calculated from base account cash profile tracker
         document.getElementById("p-kpi-total").textContent = "$" + totals.netValue.toFixed(2);
         document.getElementById("p-kpi-cash").textContent = "$" + totals.cash.toFixed(2);
         document.getElementById("p-kpi-invested").textContent = "$" + totals.invested.toFixed(2);
@@ -566,10 +666,17 @@
 
         const body = document.getElementById("portfolio-positions-table");
         body.innerHTML = "";
+        
+        // Clear cached holdings counts for processing standard max sell orders dynamically
+        this.activeUser.holdings = {};
+
         if(totals.positions.length === 0) {
           body.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim); padding:2rem 0;">No investments held yet. Head over to the Trade Station to buy your first stock!</td></tr>`;
         } else {
           totals.positions.forEach(i => {
+            // Track dynamic asset counts
+            this.activeUser.holdings[i.rawToken] = i.shares;
+
             const symSign = i.currency === "INR" ? "₹" : "$";
             const tr = document.createElement("tr");
             tr.className = "clickable-stock-row";
@@ -582,7 +689,7 @@
               <td>${symSign}${i.marketValue.toFixed(2)}</td>
               <td class="${i.gainLoss >= 0 ? 'gain' : 'loss'}">${i.gainLoss >= 0 ? '+' : ''}${symSign}${i.gainLoss.toFixed(2)}</td>
             `;
-            tr.addEventListener("click", (e) => {
+            tr.addEventListener("click", () => {
               this.loadStockFromPortfolioClick(tr.dataset.lookupQuery);
             });
             body.appendChild(tr);
@@ -615,6 +722,27 @@
         await this.switchWorkspaceView("view-trade");
         document.getElementById("trade-search-input").value = rawToken;
         await this.executeTickerQuery();
+      },
+
+      renderTrendingShortcuts() {
+        const container = document.getElementById("trending-shortcuts-container");
+        container.innerHTML = "";
+        
+        const filtered = TRENDING_DB.filter(x => this.currentFilter === "all" || x.cat === this.currentFilter);
+        
+        filtered.forEach(item => {
+          const pill = document.createElement("div");
+          pill.className = "trend-pill";
+          pill.innerHTML = `
+            <div class="t-sym">${item.sym.replace(".NS","")}</div>
+            <div class="t-lbl">${item.name}</div>
+          `;
+          pill.addEventListener("click", () => {
+            document.getElementById("trade-search-input").value = item.sym;
+            this.executeTickerQuery();
+          });
+          container.appendChild(pill);
+        });
       },
 
       syncTradeView() {
@@ -662,8 +790,24 @@
         document.getElementById("t-stat-low").textContent = currencySign + data.low.toFixed(2);
         document.getElementById("t-stat-rawtoken").textContent = data.symbol;
 
+        this.syncSellSliderContext();
         this.injectTradingViewGraph(data.symbol);
         this.runTradeCalculationPreview();
+      },
+
+      syncSellSliderContext() {
+        const sliderWrapper = document.getElementById("sell-slider-wrapper");
+        if(this.tradeMode === "sell" && this.tradeAsset) {
+          const owned = (this.activeUser.holdings && this.activeUser.holdings[this.tradeAsset.symbol]) || 0;
+          if (owned > 0) {
+            sliderWrapper.classList.remove("hidden");
+            const slider = document.getElementById("trade-qty-slider");
+            slider.max = owned;
+            document.getElementById("slider-max-display").textContent = "Owned: " + owned.toFixed(4);
+            return;
+          }
+        }
+        sliderWrapper.classList.add("hidden");
       },
 
       injectTradingViewGraph(tickerSymbol) {
@@ -671,19 +815,23 @@
         if(tickerSymbol === "^IXIC") tradingViewAssetString = "NASDAQ:IXIC";
         if(tickerSymbol === "^NSEI") tradingViewAssetString = "NSE:NIFTY";
 
+        const currentTheme = document.body.getAttribute("data-theme") || "dark";
+
         new TradingView.widget({
           "width": "100%",
           "height": "100%",
           "symbol": tradingViewAssetString,
           "interval": "D",
           "timezone": "Etc/UTC",
-          "theme": "dark",
+          "theme": currentTheme,
           "style": "1",
           "locale": "en",
-          "toolbar_bg": "#0d1117",
+          "toolbar_bg": currentTheme === "dark" ? "#0d1117" : "#ffffff",
           "enable_publishing": false,
           "hide_side_toolbar": true,
           "allow_symbol_change": false,
+          "hide_top_toolbar": true, 
+          "withheader": false,
           "container_id": "tradingview-chart-container"
         });
       },
@@ -697,6 +845,8 @@
         const currencySign = this.tradeAsset.currency === "INR" ? "₹" : "$";
         const qty = parseFloat(document.getElementById("trade-qty-input").value) || 0;
         const sum = qty * this.tradeAsset.price;
+        
+        // Math adjustment tracking based on asset trading base profiles
         const res = this.tradeMode === "buy" ? this.activeUser.cash - sum : this.activeUser.cash + sum;
 
         document.getElementById("prev-cost").textContent = currencySign + sum.toFixed(2);
@@ -786,15 +936,50 @@
 
       document.getElementById("btn-fetch-ticker").addEventListener("click", () => App.executeTickerQuery());
       
+      // Filter functionality management wires
+      document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          document.querySelectorAll(".filter-btn").forEach(x => x.classList.remove("active"));
+          e.target.classList.add("active");
+          App.currentFilter = e.target.dataset.filter;
+          App.renderTrendingShortcuts();
+        });
+      });
+
       document.getElementById("toggle-buy").addEventListener("click", (e) => {
-        App.tradeMode = "buy"; e.target.classList.add("active"); document.getElementById("toggle-sell").classList.remove("active"); App.runTradeCalculationPreview();
+        App.tradeMode = "buy"; e.target.classList.add("active"); document.getElementById("toggle-sell").classList.remove("active"); 
+        App.syncSellSliderContext(); App.runTradeCalculationPreview();
       });
       document.getElementById("toggle-sell").addEventListener("click", (e) => {
-        App.tradeMode = "sell"; e.target.classList.add("active"); document.getElementById("toggle-buy").classList.remove("active"); App.runTradeCalculationPreview();
+        App.tradeMode = "sell"; e.target.classList.add("active"); document.getElementById("toggle-buy").classList.remove("active"); 
+        App.syncSellSliderContext(); App.runTradeCalculationPreview();
       });
       
+      // Sync Range input dynamic slider shifts
+      document.getElementById("trade-qty-slider").addEventListener("input", (e) => {
+        document.getElementById("trade-qty-input").value = e.target.value;
+        App.runTradeCalculationPreview();
+      });
+
       document.getElementById("trade-qty-input").addEventListener("input", () => App.runTradeCalculationPreview());
       document.getElementById("btn-dispatch-order").addEventListener("click", () => App.dispatchOrderBlock());
+
+      // Settings Change Listeners
+      document.getElementById("setting-theme-select").addEventListener("change", (e) => {
+        const val = e.target.value;
+        document.body.setAttribute("data-theme", val);
+        localStorage.setItem("stocksim-theme", val);
+        if(App.tradeAsset) { App.injectTradingViewGraph(App.tradeAsset.symbol); }
+      });
+
+      document.getElementById("btn-save-settings").addEventListener("click", () => {
+        const newSig = document.getElementById("setting-display-name").value.strip();
+        if(newSig) {
+          App.activeUser.displayName = newSig;
+          document.getElementById("sb-user-display").textContent = newSig;
+          alert("Profile configurations saved local memory successfully.");
+        }
+      });
     });
   </script>
 </body>
