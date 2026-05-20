@@ -10,9 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet" />
   
   <style>
-    /* ==========================================================================
-       1. GLOBAL ARCHITECTURE VARIABLES & DESIGN TOKENS
-       ========================================================================== */
     :root {
       --font-display: 'Bebas Neue', sans-serif;
       --font-mono:    'Share Tech Mono', monospace;
@@ -22,14 +19,11 @@
       --radius-md:    8px;
       --radius-lg:    16px;
       --transition:   0.22s cubic-bezier(0.4, 0, 0.2, 1);
-      
       --red:          #ff3860;
       --red-dim:      #c71f40;
       --red-glow:     rgba(255, 56, 96, 0.12);
       --red-bright:   #ff6b8b;
     }
-
-    /* DARK MATRIX LAYERS */
     [data-theme="dark"] {
       --bg:             #06090c;
       --bg-card:        #0d121a;
@@ -47,8 +41,6 @@
       --accent-bright:  #66ffb3;
       --shadow:         rgba(0, 0, 0, 0.5);
     }
-
-    /* LIGHT ECO WORKSPACE */
     [data-theme="light"] {
       --bg:             #f8fafc;
       --bg-card:        #ffffff;
@@ -66,10 +58,6 @@
       --accent-bright:  #34d399;
       --shadow:         rgba(148, 163, 184, 0.15);
     }
-
-    /* ==========================================================================
-       2. REBOOT & BASE PRERENDER PROPERTIES
-       ========================================================================== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 15px; }
     body {
@@ -83,19 +71,13 @@
       -moz-osx-font-smoothing: grayscale;
       transition: background var(--transition), color var(--transition);
     }
-
-    /* SCROLLBAR RE-ENGINEERING */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-sm); }
     ::-webkit-scrollbar-thumb:hover { background: var(--border-bright); }
-
-    /* CORE GRID STRUCTURES */
     .app-container { display: flex; min-height: 100vh; flex-direction: row; position: relative; z-index: 1; }
     .hidden { display: none !important; }
     .invisible { opacity: 0; pointer-events: none; }
-
-    /* SCREEN RENDERING LAYER DEFENDERS */
     .scanlines {
       position: fixed; inset: 0; z-index: 9999; pointer-events: none !important;
       background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
@@ -104,10 +86,6 @@
       position: fixed; inset: 0; z-index: 9998; pointer-events: none !important; opacity: 0.012;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     }
-
-    /* ==========================================================================
-       3. AUTHENTICATION LANDING MODULE UI
-       ========================================================================== */
     .auth-screen {
       display: flex; align-items: center; justify-content: center; width: 100vw; min-height: 100vh;
       padding: 2rem; position: relative; z-index: 10; background: radial-gradient(circle at center, var(--bg-card) 0%, var(--bg) 100%);
@@ -125,7 +103,6 @@
     .brand-title { font-family: var(--font-display); font-size: 3.5rem; letter-spacing: 0.08em; line-height: 1; }
     .brand-title span { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
     .brand-subtitle { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); text-transform: uppercase; margin-top: 0.5rem; letter-spacing: 0.1em; }
-    
     .auth-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 2rem; background: var(--bg-input); padding: 0.35rem; border-radius: var(--radius-md); border: 1px solid var(--border); }
     .auth-tab {
       background: transparent; border: none; color: var(--text-secondary); padding: 0.75rem;
@@ -133,24 +110,18 @@
       transition: all var(--transition); font-weight: 500;
     }
     .auth-tab.active { color: var(--accent); background: var(--bg-card); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-
-    /* ==========================================================================
-       4. MAIN CONTROL SIDEBAR DECK UI
-       ========================================================================== */
     .sidebar {
       width: var(--sidebar-w); background: var(--bg-card); border-right: 1px solid var(--border);
       display: flex; flex-direction: column; padding: 2rem 1.25rem; position: fixed; top: 0; bottom: 34px; left: 0; z-index: 100;
     }
     .sidebar-brand { font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 0.05em; margin-bottom: 2rem; text-align: center; }
     .sidebar-brand span { color: var(--accent); }
-    
     .sidebar-user {
       padding: 1rem; background: var(--bg-elevated); border: 1px solid var(--border);
       border-radius: var(--radius-md); margin-bottom: 2rem; display: flex; flex-direction: column; gap: 0.15rem;
     }
     .u-display { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .u-handle { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); }
-    
     .nav-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; flex-grow: 1; }
     .nav-btn {
       width: 100%; text-align: left; background: transparent; border: none; padding: 0.85rem 1rem;
@@ -159,43 +130,28 @@
     }
     .nav-btn:hover { color: var(--text-primary); background: var(--bg-hover); padding-left: 1.25rem; }
     .nav-btn.active { color: var(--accent); background: var(--bg-elevated); border-left: 4px solid var(--accent); border-radius: 0 var(--radius-md) var(--radius-md) 0; font-weight: bold; padding-left: 1.25rem; }
-    
     .btn-logout {
       background: rgba(255, 56, 96, 0.05); border: 1px solid rgba(255, 56, 96, 0.2); color: var(--red-bright);
       padding: 0.75rem; font-family: var(--font-mono); font-size: 0.85rem; cursor: pointer; border-radius: var(--radius-md);
       margin-top: auto; transition: all var(--transition); text-align: center; font-weight: 500;
     }
     .btn-logout:hover { background: var(--red); color: #000; font-weight: bold; border-color: var(--red); box-shadow: 0 0 15px var(--red-glow); }
-
-    /* ==========================================================================
-       5. MAIN WORKSPACE PANELS & GRID RESPONSES
-       ========================================================================== */
     .workspace { flex-grow: 1; margin-left: var(--sidebar-w); padding: 2.5rem 3rem 6rem 3rem; width: calc(100% - var(--sidebar-w)); min-height: 100vh; }
     .view-header { margin-bottom: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end; gap: 1.5rem; }
     .view-title { font-family: var(--font-display); font-size: 2.6rem; text-transform: uppercase; letter-spacing: 0.03em; line-height: 1.1; }
     .view-sub { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem; }
-
-    /* CORE SYSTEM CARDS */
     .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: relative; }
     .card-title { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 0.05em; margin-bottom: 1.25rem; color: var(--text-primary); text-transform: uppercase; display: flex; align-items: center; justify-content: space-between; }
-    
-    /* KPI METRICS STRIP GRID */
     .kpi-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
     .kpi-card { background: var(--bg-card); border: 1px solid var(--border); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: transform var(--transition); }
     .kpi-card:hover { transform: translateY(-2px); border-color: var(--border-bright); }
     .kpi-lbl-flex { display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
     .kpi-val { font-family: var(--font-mono); font-size: 1.8rem; font-weight: 700; margin-top: 0.5rem; line-height: 1.2; }
-
-    /* TOOLTIPS FRAMEWORK */
     .help-tooltip {
       display: inline-flex; align-items: center; justify-content: center; background: var(--bg-hover); color: var(--text-secondary);
       font-weight: bold; font-size: 0.68rem; width: 16px; height: 16px; border-radius: 50%; cursor: help; transition: all var(--transition); text-transform: none; font-family: var(--font-body);
     }
     .help-tooltip:hover { background: var(--accent); color: #000; }
-
-    /* ==========================================================================
-       6. TRADE INTERACTION CONSOLES & AUTOSUGGESTS
-       ========================================================================== */
     .filter-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
     .filter-btn {
       background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-secondary);
@@ -203,7 +159,6 @@
       cursor: pointer; transition: all var(--transition); font-weight: 500;
     }
     .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--bg-hover); }
-
     .trending-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
     .trend-pill {
       background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -212,8 +167,6 @@
     .trend-pill:hover { border-color: var(--accent); background: var(--bg-hover); transform: translateY(-1px); box-shadow: 0 4px 12px var(--shadow); }
     .trend-pill .t-sym { font-family: var(--font-mono); font-weight: 700; font-size: 1rem; color: var(--accent); }
     .trend-pill .t-lbl { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-    /* DATA ENTRY PATTERNS */
     .form-group { margin-bottom: 1.5rem; position: relative; }
     .form-label { display: block; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em; }
     .form-input {
@@ -221,11 +174,9 @@
       border-radius: var(--radius-md); padding: 0.85rem 1.1rem; font-family: var(--font-mono); font-size: 0.95rem; outline: none; transition: border-color var(--transition);
     }
     .form-input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-    
     .slider-row { display: flex; align-items: center; gap: 1.25rem; margin-top: 0.75rem; }
     .form-range-input { flex-grow: 1; accent-color: var(--accent); height: 6px; background: var(--bg-input); border-radius: 3px; cursor: pointer; }
     .slider-max-lbl { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); background: var(--bg-elevated); padding: 0.25rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 50px; text-align: center; }
-
     .btn-primary {
       width: 100%; background: var(--accent); color: #000; border: none; padding: 1rem;
       font-family: var(--font-display); font-size: 1.2rem; letter-spacing: 0.08em; cursor: pointer;
@@ -234,41 +185,27 @@
     }
     .btn-primary:hover { background: var(--accent-dim); transform: translateY(-1px); box-shadow: 0 4px 15px var(--accent-glow); }
     .btn-primary:active { transform: translateY(0); }
-    
     .form-error {
       background: rgba(255, 56, 96, 0.06); border-left: 4px solid var(--red); color: #ff6b8b;
       font-family: var(--font-mono); font-size: 0.82rem; padding: 0.85rem 1.1rem; margin-bottom: 1.5rem; border-radius: var(--radius-sm);
     }
-
-    /* ==========================================================================
-       7. FINANCIAL TRANSACTION DATA TABLES
-       ========================================================================== */
     .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-md); border: 1px solid var(--border); }
     .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; min-width: 750px; background: var(--bg-card); }
     .data-table th { background: var(--bg-elevated); font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); padding: 0.85rem 1.1rem; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em; }
     .data-table td { padding: 1.1rem; font-family: var(--font-mono); border-bottom: 1px solid var(--border); color: var(--text-primary); transition: background var(--transition); }
     .data-table tr:last-child td { border-bottom: none; }
-    
     .clickable-stock-row { cursor: pointer; }
     .clickable-stock-row:hover td { background: var(--bg-hover); }
     .clickable-stock-row:hover .sym-badge { background: var(--accent); color: #000; box-shadow: 0 0 10px var(--accent-glow); }
-
     .sym-badge { background: var(--accent-glow); border: 1px solid rgba(0,255,136,0.15); color: var(--accent); font-size: 0.78rem; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-weight: 700; transition: all var(--transition); display: inline-block; text-align: center; }
     .gain { color: var(--accent) !important; }
     .loss { color: var(--red-bright) !important; }
-
-    /* LAYOUT PATTERN SPLITTERS */
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
     .trade-layout-grid { display: grid; grid-template-columns: 1.4fr 0.6fr; gap: 2rem; }
-    
     .trade-toggle { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg-input); padding: 0.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 1px solid var(--border); }
     .toggle-btn { background: transparent; border: none; color: var(--text-secondary); padding: 0.65rem; font-family: var(--font-display); font-size: 1.1rem; cursor: pointer; border-radius: var(--radius-sm); transition: all var(--transition); letter-spacing: 0.05em; }
     .toggle-btn.active[data-mode="buy"] { background: var(--accent); color: #000; font-weight: 700; box-shadow: 0 2px 8px var(--accent-glow); }
     .toggle-btn.active[data-mode="sell"] { background: var(--red); color: #000; font-weight: 700; box-shadow: 0 2px 8px var(--red-glow); }
-
-    /* ==========================================================================
-       8. MARQUEE RUNNING TICKER TAPE
-       ========================================================================== */
     .ticker-tape-wrap { position: fixed; bottom: 0; left: 0; right: 0; z-index: 500; background: var(--bg-elevated); border-top: 1px solid var(--border); height: 34px; overflow: hidden; box-shadow: 0 -4px 15px rgba(0,0,0,0.1); }
     .ticker-tape { display: flex; align-items: center; height: 100%; white-space: nowrap; animation: ticker-scroll 35s linear infinite; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); }
     .ticker-tape:hover { animation-play-state: paused; }
@@ -276,30 +213,29 @@
     .tt-item { padding: 0 2rem; display: inline-flex; align-items: center; gap: 0.65rem; border-right: 1px solid var(--border); height: 100%; }
     .tt-sym { color: var(--accent); font-weight: 700; }
     .tt-price { font-weight: bold; }
-
-    /* ==========================================================================
-       9. ADVANCED VISUALIZATION MODULE CONTAINERS
-       ========================================================================== */
     .chart-box-wrapper { width: 100%; height: 500px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; position: relative; }
     #tradingview-chart-container { width: 100%; height: 100%; }
     #native-chart-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; background: #0d1117; }
     .native-ctrl-row { display: flex; gap: 0.5rem; padding: 0.75rem 1rem; background: #161b22; border-bottom: 1px solid #21262d; align-items: center; }
     .native-ctrl-row button { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; font-family: var(--font-mono); font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 4px; cursor: pointer; transition: all var(--transition); }
     .native-ctrl-row button:hover, .native-ctrl-row button.active { border-color: var(--accent); color: var(--accent); background: #263c33; }
-    
     #chart-canvas-container { flex-grow: 1; min-height: 0; position: relative; }
     #vol-canvas-container { height: 95px; border-top: 1px solid #21262d; position: relative; }
-    
+    /* Chart loading/error state */
+    .chart-status-msg {
+      display: flex; align-items: center; justify-content: center; height: 100%;
+      font-family: var(--font-mono); font-size: 0.85rem; color: #8b949e; flex-direction: column; gap: 0.75rem;
+    }
+    .chart-status-msg .spin {
+      width: 24px; height: 24px; border: 2px solid #30363d; border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .theme-switch-row { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-lg); }
-
-    /* ==========================================================================
-       10. RESPONSIVE LAYER ADAPTERS
-       ========================================================================== */
     @media (max-width: 1100px) {
       .trade-layout-grid { grid-template-columns: 1fr; }
       .two-col { grid-template-columns: 1fr; }
     }
-    
     @media (max-width: 850px) {
       html { font-size: 14px; }
       .app-container { flex-direction: column; }
@@ -391,7 +327,6 @@
             <p class="view-sub">System balance tracking modules and live net liquidity matrix</p>
           </div>
         </div>
-        
         <div class="kpi-strip">
           <div class="kpi-card">
             <div class="kpi-lbl-flex">Net Liquidation Pool <span class="help-tooltip" title="Total current dynamic valuation including fluid cash combined with live equity market values.">?</span></div>
@@ -410,7 +345,6 @@
             <div class="kpi-val" id="p-kpi-return">0.00%</div>
           </div>
         </div>
-        
         <div class="card">
           <h2 class="card-title">
             Open Capital Formations
@@ -479,7 +413,6 @@
               <h3 class="card-title" style="margin-left:0.75rem; margin-top:0.5rem;">DYNAMIC FLOW GRAPH VISUALIZATION</h3>
               <div class="chart-box-wrapper">
                 <div id="tradingview-chart-container"></div>
-                
                 <div id="native-chart-wrapper" class="hidden">
                   <div class="native-ctrl-row">
                     <button id="range-btn-1y" class="active" onclick="App.setNativeRange('1y','1d','range-btn-1y')">1 YEAR OUT</button>
@@ -501,11 +434,9 @@
                   <button class="toggle-btn active" data-mode="buy" id="toggle-buy">ACQUIRE (BUY)</button>
                   <button class="toggle-btn" data-mode="sell" id="toggle-sell">LIQUIDATE (SELL)</button>
                 </div>
-                
                 <div class="form-group">
                   <label class="form-label" id="qty-box-label">TRANSACTION CAPACITY QUANTITY</label>
                   <input type="number" class="form-input" id="trade-qty-input" step="any" min="0.0001" placeholder="Specify unit load metrics..." />
-                  
                   <div id="sell-slider-wrapper" class="hidden" style="margin-top: 1rem;">
                     <label class="form-label" style="color: var(--text-dim);">Portfolio Allocation Liquidation %</label>
                     <div class="slider-row">
@@ -514,7 +445,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div style="background: var(--bg-input); padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.88rem;">
                   <div style="display:flex; justify-content: space-between; margin-bottom: 0.6rem;">
                     <span id="calc-preview-label">Estimated Allocation Debit</span>
@@ -619,19 +549,13 @@
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
   <script>
-    /**
-     * @namespace App
-     * @description Core frontend single object design architecture engine. Handles all component bindings, local currency matrices, dynamic light weight charts, and API proxies.
-     */
     const App = {
-      // TRACKING STATE OBJECTS
       activeUser: null,
       tradeMode: "buy",
       tradeAsset: null,
       currentCategoryFilter: "all",
       userPositionsCache: {},
 
-      // NATIVE LIGHTWEIGHT CHART POINTER CONTAINERS
       nativeChartInstance: null,
       nativeVolChartInstance: null,
       nativeMainCandleSeries: null,
@@ -642,7 +566,6 @@
       nativeIntervalSetting: "1d",
       nativeChartRawDataset: [],
 
-      // STANDARD SYSTEM AUTOSUGGESTS MATRIX DATASET
       trendingData: [
         { sym: "RELIANCE.NS", name: "Reliance Industries", cat: "india" },
         { sym: "TCS.NS", name: "Tata Consultancy Services", cat: "india" },
@@ -660,9 +583,6 @@
         { sym: "^DJI", name: "Dow Jones Industrial Base", cat: "crypto" }
       ],
 
-      /**
-       * Primary Core Boot Initializer.
-       */
       init() {
         this.runTickerTapeBroadcast();
         this.switchAuthTab("login");
@@ -672,26 +592,31 @@
         this.bindUserEventInteractions();
       },
 
-      /**
-       * Local Event Binder Layer Engine.
-       */
       bindUserEventInteractions() {
         document.getElementById("tab-login-toggle").addEventListener("click", () => this.switchAuthTab("login"));
         document.getElementById("tab-reg-toggle").addEventListener("click", () => this.switchAuthTab("register"));
-        
         document.getElementById("btn-submit-login").addEventListener("click", () => this.processLoginUplink());
         document.getElementById("btn-submit-register").addEventListener("click", () => this.processRegisterInitialization());
-        
         document.getElementById("btn-logout-action").addEventListener("click", () => this.terminateSessionUplink());
         document.getElementById("btn-fetch-ticker").addEventListener("click", () => this.executeTickerQuery());
-        
+
+        // ── FIX 1: Enter key submits auth forms ──────────────────────────────
+        const loginEnterHandler = (e) => { if (e.key === "Enter") this.processLoginUplink(); };
+        document.getElementById("in-login-user").addEventListener("keypress", loginEnterHandler);
+        document.getElementById("in-login-pass").addEventListener("keypress", loginEnterHandler);
+
+        const regEnterHandler = (e) => { if (e.key === "Enter") this.processRegisterInitialization(); };
+        document.getElementById("in-reg-user").addEventListener("keypress", regEnterHandler);
+        document.getElementById("in-reg-display").addEventListener("keypress", regEnterHandler);
+        document.getElementById("in-reg-pass").addEventListener("keypress", regEnterHandler);
+        // ─────────────────────────────────────────────────────────────────────
+
         document.getElementById("trade-search-input").addEventListener("keypress", (e) => {
-          if(e.key === "Enter") this.executeTickerQuery();
+          if (e.key === "Enter") this.executeTickerQuery();
         });
 
         document.getElementById("toggle-buy").addEventListener("click", (e) => this.updateTradeModeConfiguration("buy", e.target));
         document.getElementById("toggle-sell").addEventListener("click", (e) => this.updateTradeModeConfiguration("sell", e.target));
-        
         document.getElementById("trade-qty-slider").addEventListener("input", (e) => this.processSellPercentageSliderAdjustment(e.target.value));
         document.getElementById("trade-qty-input").addEventListener("input", () => this.runTradeCalculationPreview());
         document.getElementById("btn-dispatch-order").addEventListener("click", () => this.dispatchOrderBlockToBackend());
@@ -703,12 +628,11 @@
           });
         });
 
-        // Dynamic Native Canvas window sizing controller
         window.addEventListener('resize', () => {
           if (this.tradeAsset && this.tradeAsset.provider === "yahoo" && this.nativeChartInstance) {
             const cBox = document.getElementById("chart-canvas-container");
             const vBox = document.getElementById("vol-canvas-container");
-            if(cBox && vBox) {
+            if (cBox && vBox) {
               this.nativeChartInstance.resize(cBox.offsetWidth, 380);
               this.nativeVolChartInstance.resize(vBox.offsetWidth, 95);
             }
@@ -716,9 +640,6 @@
         });
       },
 
-      /**
-       * Themes Workspace Matrix Configurator
-       */
       configureWorkspaceThemeSystem() {
         const btn = document.getElementById("btn-toggle-theme-mode");
         btn.addEventListener("click", () => {
@@ -726,37 +647,27 @@
           const nextTheme = currentTheme === "dark" ? "light" : "dark";
           document.body.setAttribute("data-theme", nextTheme);
           btn.textContent = nextTheme === "dark" ? "ECO LIGHT MODE" : "DARK MATRIX MODE";
-          
-          if(this.tradeAsset) {
-            this.renderVisualsChartModule();
-          }
+          if (this.tradeAsset) this.renderVisualsChartModule();
         });
       },
 
-      /**
-       * Structural Navigator Visibility Routing View Router.
-       */
       async switchWorkspaceView(viewId) {
         document.querySelectorAll(".nav-btn").forEach(b => {
-          if(b.dataset.target === viewId) b.classList.add("active");
-          else b.classList.remove("active");
+          b.classList.toggle("active", b.dataset.target === viewId);
         });
         document.querySelectorAll(".view-panel").forEach(p => p.classList.add("hidden"));
         document.getElementById(viewId).classList.remove("hidden");
 
-        if(viewId === "view-portfolio") await this.syncPortfolioView();
-        if(viewId === "view-trade") this.syncTradeView();
-        if(viewId === "view-history") await this.syncPortfolioView();
-        if(viewId === "view-leaderboard") await this.syncLeaderboardView();
+        if (viewId === "view-portfolio") await this.syncPortfolioView();
+        if (viewId === "view-trade") this.syncTradeView();
+        if (viewId === "view-history") await this.syncPortfolioView();
+        if (viewId === "view-leaderboard") await this.syncLeaderboardView();
       },
 
-      /**
-       * Auth Landing Panel State Transition Trigger.
-       */
       switchAuthTab(type) {
         document.getElementById("login-error-box").classList.add("hidden");
         document.getElementById("reg-error-box").classList.add("hidden");
-        if(type === "login") {
+        if (type === "login") {
           document.getElementById("tab-login-toggle").classList.add("active");
           document.getElementById("tab-reg-toggle").classList.remove("active");
           document.getElementById("form-login").classList.remove("hidden");
@@ -769,9 +680,6 @@
         }
       },
 
-      /**
-       * Auto-suggests UI Pill Builders.
-       */
       bindCategoryFilterSelectors() {
         document.querySelectorAll(".filter-btn").forEach(btn => {
           btn.addEventListener("click", (e) => {
@@ -786,9 +694,8 @@
       renderTrendingPills() {
         const container = document.getElementById("trending-pills-box");
         container.innerHTML = "";
-        const filteredItems = this.trendingData.filter(i => this.currentCategoryFilter === "all" || i.cat === this.currentCategoryFilter);
-        
-        filteredItems.forEach(i => {
+        const filtered = this.trendingData.filter(i => this.currentCategoryFilter === "all" || i.cat === this.currentCategoryFilter);
+        filtered.forEach(i => {
           const pill = document.createElement("div");
           pill.className = "trend-pill";
           pill.innerHTML = `<div class="t-sym">${i.sym.replace('.NS','').replace('^','')}</div><div class="t-lbl">${i.name}</div>`;
@@ -800,76 +707,45 @@
         });
       },
 
-      /**
-       * Network Layer Account Database Synchronizers.
-       */
       async processRegisterInitialization() {
         const err = document.getElementById("reg-error-box");
         err.classList.add("hidden");
-        
         const username = document.getElementById("in-reg-user").value.trim();
         const displayName = document.getElementById("in-reg-display").value.trim();
         const password = document.getElementById("in-reg-pass").value.trim();
-
-        if(!username || !displayName || !password) {
+        if (!username || !displayName || !password) {
           err.textContent = "All configuration field layers must be validated.";
-          err.classList.remove("hidden");
-          return;
+          err.classList.remove("hidden"); return;
         }
-
         try {
           const res = await fetch('/api/auth/register', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ username, displayName, password })
           });
           const data = await res.json();
-          
-          if (!res.ok) {
-            err.textContent = data.error || "Uplink registration failure parameters.";
-            err.classList.remove("hidden");
-          } else {
-            this.activeUser = data;
-            this.bootToAppWorkspace();
-          }
-        } catch(e) {
-          err.textContent = "System hardware connection breakdown.";
-          err.classList.remove("hidden");
-        }
+          if (!res.ok) { err.textContent = data.error || "Uplink registration failure."; err.classList.remove("hidden"); }
+          else { this.activeUser = data; this.bootToAppWorkspace(); }
+        } catch(e) { err.textContent = "System hardware connection breakdown."; err.classList.remove("hidden"); }
       },
 
       async processLoginUplink() {
         const err = document.getElementById("login-error-box");
         err.classList.add("hidden");
-        
         const username = document.getElementById("in-login-user").value.trim();
         const password = document.getElementById("in-login-pass").value.trim();
-
-        if(!username || !password) {
+        if (!username || !password) {
           err.textContent = "Operator signatures cannot be transmitted blank.";
-          err.classList.remove("hidden");
-          return;
+          err.classList.remove("hidden"); return;
         }
-
         try {
           const res = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ username, password })
           });
           const data = await res.json();
-
-          if (!res.ok) {
-            err.textContent = data.error || "Identity clearance credentials denied.";
-            err.classList.remove("hidden");
-          } else {
-            this.activeUser = data;
-            this.bootToAppWorkspace();
-          }
-        } catch(e) {
-          err.textContent = "System connection structural error.";
-          err.classList.remove("hidden");
-        }
+          if (!res.ok) { err.textContent = data.error || "Identity clearance credentials denied."; err.classList.remove("hidden"); }
+          else { this.activeUser = data; this.bootToAppWorkspace(); }
+        } catch(e) { err.textContent = "System connection structural error."; err.classList.remove("hidden"); }
       },
 
       bootToAppWorkspace() {
@@ -881,95 +757,74 @@
       },
 
       async terminateSessionUplink() {
-        try {
-          await fetch('/api/auth/logout', {method: 'POST'});
-        } catch(e) {}
-        this.activeUser = null;
-        this.tradeAsset = null;
-        this.userPositionsCache = {};
-        this.nativeChartRawDataset = [];
+        try { await fetch('/api/auth/logout', {method: 'POST'}); } catch(e) {}
+        this.activeUser = null; this.tradeAsset = null;
+        this.userPositionsCache = {}; this.nativeChartRawDataset = [];
         document.getElementById("screen-app").classList.add("hidden");
         document.getElementById("screen-auth").classList.remove("hidden");
         this.switchAuthTab("login");
       },
 
-      /**
-       * Dynamic Dynamic Multi Currency Ledger UI Synchronization.
-       */
       async syncPortfolioView() {
         try {
           const res = await fetch('/api/user/portfolio');
           if (!res.ok) return;
           const totals = await res.json();
-
           this.activeUser.cash = totals.cash;
           this.userPositionsCache = {};
 
-          // Portfolio metrics baseline references (Rendered via Global Standard Pool metrics)
           document.getElementById("p-kpi-total").textContent = "$" + totals.netValue.toFixed(2);
           document.getElementById("p-kpi-cash").textContent = "$" + totals.cash.toFixed(2);
           document.getElementById("p-kpi-invested").textContent = "$" + totals.invested.toFixed(2);
-          
           const yieldEl = document.getElementById("p-kpi-return");
           yieldEl.textContent = (totals.returns >= 0 ? "+" : "") + totals.returns.toFixed(2) + "%";
           yieldEl.className = "kpi-val " + (totals.returns >= 0 ? "gain" : "loss");
 
-          // GRID BINDER FRAMEWORK
           const positionsBody = document.getElementById("portfolio-positions-table");
           positionsBody.innerHTML = "";
-          
-          if(!totals.positions || totals.positions.length === 0) {
+          if (!totals.positions || totals.positions.length === 0) {
             positionsBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim); padding:3.5rem 0; font-family:var(--font-mono);">No asset committals registered in active sectors. Initialize execution targets inside Trade Station.</td></tr>`;
           } else {
             totals.positions.forEach(pos => {
               this.userPositionsCache[pos.rawToken] = pos.shares;
-              
-              // Dynamic Currency Identifier checks based on live currency metrics
-              const currencySymbol = pos.currency === "INR" ? "₹" : "$";
-              
+              const cs = pos.currency === "INR" ? "₹" : "$";
               const row = document.createElement("tr");
               row.className = "clickable-stock-row";
-              row.dataset.lookupQuery = pos.rawToken; 
+              row.dataset.lookupQuery = pos.rawToken;
               row.innerHTML = `
                 <td><span class="sym-badge">${pos.symbol}</span></td>
                 <td>${pos.shares.toFixed(4)}</td>
-                <td>${currencySymbol}${pos.avgCost.toFixed(2)}</td>
-                <td>${currencySymbol}${pos.currentPrice.toFixed(2)}</td>
-                <td>${currencySymbol}${pos.marketValue.toFixed(2)}</td>
-                <td class="${pos.gainLoss >= 0 ? 'gain' : 'loss'}">${pos.gainLoss >= 0 ? '+' : ''}${currencySymbol}${pos.gainLoss.toFixed(2)}</td>
+                <td>${cs}${pos.avgCost.toFixed(2)}</td>
+                <td>${cs}${pos.currentPrice.toFixed(2)}</td>
+                <td>${cs}${pos.marketValue.toFixed(2)}</td>
+                <td class="${pos.gainLoss >= 0 ? 'gain' : 'loss'}">${pos.gainLoss >= 0 ? '+' : ''}${cs}${pos.gainLoss.toFixed(2)}</td>
               `;
-              row.addEventListener("click", () => {
-                this.loadAssetFromDirectRowClick(row.dataset.lookupQuery);
-              });
+              row.addEventListener("click", () => this.loadAssetFromDirectRowClick(row.dataset.lookupQuery));
               positionsBody.appendChild(row);
             });
           }
 
-          // AUDIT ACCOUNT DISPATCH ARCHIVES BINDER
           const logsBody = document.getElementById("history-logs-table");
           logsBody.innerHTML = "";
-          
-          if(!totals.history || totals.history.length === 0) {
+          if (!totals.history || totals.history.length === 0) {
             logsBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-dim); padding:3.5rem 0; font-family:var(--font-mono);">Permanent audit ledger sequence empty.</td></tr>`;
           } else {
             totals.history.forEach(log => {
-              const historicalSymbol = log.currency === "INR" ? "₹" : "$";
+              const hs = log.currency === "INR" ? "₹" : "$";
               const row = document.createElement("tr");
               row.innerHTML = `
                 <td>${log.date}</td>
                 <td style="font-weight:700;" class="${log.type === 'BUY' ? 'gain' : 'loss'}">${log.type}</td>
                 <td><span class="sym-badge">${log.cleanSymbol}</span></td>
                 <td>${log.shares.toFixed(4)}</td>
-                <td>${historicalSymbol}${log.price.toFixed(2)}</td>
-                <td>${historicalSymbol}${log.sum.toFixed(2)}</td>
-                <td class="gain">${log.type === 'SELL' ? historicalSymbol + '0.00' : '0.00'}</td>
+                <td>${hs}${log.price.toFixed(2)}</td>
+                <td>${hs}${log.sum.toFixed(2)}</td>
+                <td class="gain">${log.type === 'SELL' ? hs + '0.00' : '0.00'}</td>
               `;
               logsBody.appendChild(row);
             });
           }
-        } catch(err) {
-          console.error("Critical structural tracking ledger failed to bind.", err);
-        }
+        } catch(err) { console.error("Portfolio sync failed.", err); }
       },
 
       loadAssetFromDirectRowClick(rawToken) {
@@ -981,7 +836,7 @@
       syncTradeView() {
         document.getElementById("trade-cash-badge").textContent = "Available Portfolio Cash: $" + this.activeUser.cash.toFixed(2);
         document.getElementById("trade-qty-input").value = "";
-        if(!this.tradeAsset) {
+        if (!this.tradeAsset) {
           document.getElementById("trade-search-input").value = "";
           document.getElementById("trade-ticker-panel").classList.add("hidden");
         }
@@ -989,143 +844,109 @@
         this.runTradeCalculationPreview();
       },
 
-      /**
-       * Core Linguistic Processing Router Engine Module.
-       */
       async executeTickerQuery() {
         const errorContainer = document.getElementById("trade-search-error");
         errorContainer.classList.add("hidden");
-        
-        const rawQueryString = document.getElementById("trade-search-input").value.trim();
-        if (!rawQueryString) return;
+        const rawQuery = document.getElementById("trade-search-input").value.trim();
+        if (!rawQuery) return;
 
-        const lookupButton = document.getElementById("btn-fetch-ticker");
-        lookupButton.disabled = true;
-        lookupButton.textContent = "PARSING CONNECTORS...";
+        const btn = document.getElementById("btn-fetch-ticker");
+        btn.disabled = true;
+        btn.textContent = "PARSING CONNECTORS...";
 
         try {
-          const res = await fetch(`/api/market/query?query=${encodeURIComponent(rawQueryString)}`);
+          const res = await fetch(`/api/market/query?query=${encodeURIComponent(rawQuery)}`);
           const data = await res.json();
-          
           if (!res.ok) {
             errorContainer.textContent = data.error || "Data allocation parse error.";
             errorContainer.classList.remove("hidden");
-            lookupButton.disabled = false;
-            lookupButton.textContent = "QUERY LOOKUP";
             return;
           }
-
           this.tradeAsset = data;
-          
-          // Inject dynamic programmatic identifiers to layout layers based on true asset structure
-          const assetCurrencySymbol = data.currency === "INR" ? "₹" : "$";
+          const cs = data.currency === "INR" ? "₹" : "$";
 
           document.getElementById("trade-ticker-panel").classList.remove("hidden");
-          document.getElementById("t-display-symbol").textContent = data.cleanName; 
+          document.getElementById("t-display-symbol").textContent = data.cleanName;
           document.getElementById("t-display-name").textContent = data.assetClassDescription;
-          document.getElementById("t-display-price").textContent = assetCurrencySymbol + data.price.toFixed(2);
-          
-          const changeContainer = document.getElementById("t-display-change");
-          changeContainer.textContent = (data.change >= 0 ? "+" : "") + data.change.toFixed(2) + " (" + (data.pct >= 0 ? "+" : "") + data.pct.toFixed(2) + "%)";
-          changeContainer.className = data.change >= 0 ? "gain" : "loss";
+          document.getElementById("t-display-price").textContent = cs + data.price.toFixed(2);
 
-          document.getElementById("t-stat-price").textContent = assetCurrencySymbol + data.price.toFixed(2);
-          document.getElementById("t-stat-high").textContent = assetCurrencySymbol + data.high.toFixed(2);
-          document.getElementById("t-stat-low").textContent = assetCurrencySymbol + data.low.toFixed(2);
+          const changeEl = document.getElementById("t-display-change");
+          changeEl.textContent = (data.change >= 0 ? "+" : "") + data.change.toFixed(2) + " (" + (data.pct >= 0 ? "+" : "") + data.pct.toFixed(2) + "%)";
+          changeEl.className = data.change >= 0 ? "gain" : "loss";
+
+          document.getElementById("t-stat-price").textContent = cs + data.price.toFixed(2);
+          document.getElementById("t-stat-high").textContent = cs + data.high.toFixed(2);
+          document.getElementById("t-stat-low").textContent = cs + data.low.toFixed(2);
           document.getElementById("t-stat-rawtoken").textContent = data.symbol;
 
           this.syncAllocationPercentageSliderContext();
           this.renderVisualsChartModule();
           this.runTradeCalculationPreview();
-
         } catch(e) {
           errorContainer.textContent = "System node communications interface error.";
           errorContainer.classList.remove("hidden");
         } finally {
-          lookupButton.disabled = false;
-          lookupButton.textContent = "QUERY LOOKUP";
+          btn.disabled = false;
+          btn.textContent = "QUERY LOOKUP";
         }
       },
 
       syncAllocationPercentageSliderContext() {
-        if(!this.tradeAsset) return;
-        const ownedShares = this.userPositionsCache[this.tradeAsset.symbol] || 0;
-        const rangeSlider = document.getElementById("trade-qty-slider");
-        const rangeDisplay = document.getElementById("slider-max-display");
-        
-        rangeSlider.value = 0;
-        rangeDisplay.textContent = `0% (Owned Units: ${ownedShares.toFixed(4)})`;
+        if (!this.tradeAsset) return;
+        const owned = this.userPositionsCache[this.tradeAsset.symbol] || 0;
+        document.getElementById("trade-qty-slider").value = 0;
+        document.getElementById("slider-max-display").textContent = `0% (Owned Units: ${owned.toFixed(4)})`;
       },
 
-      /**
-       * Multi-Architecture Dynamic Visualization Chart Engine Module Router.
-       */
       renderVisualsChartModule() {
-        const tvWrapperContainer = document.getElementById("tradingview-chart-container");
-        const nativeWrapperContainer = document.getElementById("native-chart-wrapper");
-        
-        // DESTINATION CONFIGURATION DETERMINATION FRAMEWORK
+        const tvContainer = document.getElementById("tradingview-chart-container");
+        const nativeWrapper = document.getElementById("native-chart-wrapper");
+
         if (this.tradeAsset.provider === "finnhub") {
-          // ROUTE PATH A: Standard Integrated Frame Router (For US Asset Vectors)
-          tvWrapperContainer.style.display = "block";
-          nativeWrapperContainer.classList.add("hidden");
+          tvContainer.style.display = "block";
+          nativeWrapper.classList.add("hidden");
           this.teardownNativeChartArchitecture();
           this.injectStandardTradingViewWidgetIframe(this.tradeAsset.symbol);
         } else {
-          // ROUTE PATH B: High Density Lightweight Core Router (For Indian Native Vectors)
-          tvWrapperContainer.style.display = "none";
-          nativeWrapperContainer.classList.remove("hidden");
+          tvContainer.style.display = "none";
+          nativeWrapper.classList.remove("hidden");
           this.initializeHighPerformanceNativeCanvasChart();
           this.fetchNativeProxyChartStream();
         }
       },
 
       injectStandardTradingViewWidgetIframe(tickerSymbol) {
-        let cleanTradingViewTickerString = tickerSymbol.toUpperCase();
-        
-        // Apply routing index adjustments
-        if(cleanTradingViewTickerString === "^IXIC") cleanTradingViewTickerString = "NASDAQ:IXIC";
-        else if(cleanTradingViewTickerString === "^NSEI") cleanTradingViewTickerString = "NSE:NIFTY";
-        else if(cleanTradingViewTickerString === "^BSESN") cleanTradingViewTickerString = "BSE:SENSEX";
-        else if(cleanTradingViewTickerString.endsWith(".NS")) {
-          cleanTradingViewTickerString = "NSE:" + cleanTradingViewTickerString.replace(".NS", "");
-        } else if(cleanTradingViewTickerString.endsWith(".BO")) {
-          cleanTradingViewTickerString = "BSE:" + cleanTradingViewTickerString.replace(".BO", "");
-        }
+        let tvTicker = tickerSymbol.toUpperCase();
+        if (tvTicker === "^IXIC") tvTicker = "NASDAQ:IXIC";
+        else if (tvTicker === "^NSEI") tvTicker = "NSE:NIFTY";
+        else if (tvTicker === "^BSESN") tvTicker = "BSE:SENSEX";
+        else if (tvTicker.endsWith(".NS")) tvTicker = "NSE:" + tvTicker.replace(".NS", "");
+        else if (tvTicker.endsWith(".BO")) tvTicker = "BSE:" + tvTicker.replace(".BO", "");
 
-        const activeWorkspaceTheme = document.body.getAttribute("data-theme") || "dark";
-
+        const theme = document.body.getAttribute("data-theme") || "dark";
         new TradingView.widget({
-          "width": "100%",
-          "height": "100%",
-          "symbol": cleanTradingViewTickerString,
-          "interval": "D",
-          "timezone": "Asia/Kolkata",
-          "theme": activeWorkspaceTheme,
-          "style": "1",
-          "locale": "en",
-          "toolbar_bg": activeWorkspaceTheme === "dark" ? "#0d121a" : "#ffffff",
-          "enable_publishing": false,
-          "hide_side_toolbar": true,
+          "width": "100%", "height": "100%",
+          "symbol": tvTicker, "interval": "D",
+          "timezone": "Asia/Kolkata", "theme": theme,
+          "style": "1", "locale": "en",
+          "toolbar_bg": theme === "dark" ? "#0d121a" : "#ffffff",
+          "enable_publishing": false, "hide_side_toolbar": true,
           "allow_symbol_change": false,
           "container_id": "tradingview-chart-container"
         });
       },
 
-      /**
-       * High-Density Local Light Weight Canvas Core Controllers.
-       */
       initializeHighPerformanceNativeCanvasChart() {
         this.teardownNativeChartArchitecture();
-
         const candleBox = document.getElementById("chart-canvas-container");
         const volumeBox = document.getElementById("vol-canvas-container");
         candleBox.innerHTML = ""; volumeBox.innerHTML = "";
 
-        // CONFIG BASE MODIFIERS
+        // Show loading spinner while data fetches
+        candleBox.innerHTML = `<div class="chart-status-msg"><div class="spin"></div><span>Fetching chart data...</span></div>`;
+
         this.nativeChartInstance = LightweightCharts.createChart(candleBox, {
-          width: candleBox.offsetWidth,
-          height: 380,
+          width: candleBox.offsetWidth, height: 380,
           layout: { background: { color: '#0d1117' }, textColor: '#8b949e' },
           grid: { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
           crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
@@ -1134,26 +955,22 @@
         });
 
         this.nativeVolChartInstance = LightweightCharts.createChart(volumeBox, {
-          width: volumeBox.offsetWidth,
-          height: 95,
+          width: volumeBox.offsetWidth, height: 95,
           layout: { background: { color: '#0d1117' }, textColor: '#8b949e' },
           grid: { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
           rightPriceScale: { borderColor: '#30363d', visible: false },
           timeScale: { visible: false }
         });
 
-        // GENERATE DATA CHANNEL SERIES OBJECTS
         this.nativeMainCandleSeries = this.nativeChartInstance.addCandlestickSeries({
           upColor: '#2ea043', downColor: '#f85149', borderColor: '#2ea043',
           wickUpColor: '#2ea043', wickDownColor: '#f85149', borderDownColor: '#f85149'
         });
 
         this.nativeVolumeSeries = this.nativeVolChartInstance.addHistogramSeries({
-          priceFormat: { type: 'volume' },
-          priceScaleId: ''
+          priceFormat: { type: 'volume' }, priceScaleId: ''
         });
 
-        // Establish linked interaction loops across dual stacked graphs
         this.nativeChartInstance.timeScale().subscribeVisibleTimeRangeChange(range => {
           this.nativeVolChartInstance.timeScale().setVisibleRange(range);
         });
@@ -1162,290 +979,243 @@
         });
       },
 
+      // ── FIX 2: Robust multi-proxy chart fetch for Indian stocks ─────────────
       async fetchNativeProxyChartStream() {
-        const querySymbolToken = this.tradeAsset.symbol;
-        // Bypassing client side CORS blocking vectors using the secure corsproxy mapping layout
-        const targetUrl = `https://corsproxy.io/?${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/' + querySymbolToken + '?interval=' + this.nativeIntervalSetting + '&range=' + this.nativeRangeSetting)}`;
-        
+        const sym = this.tradeAsset.symbol;
+        const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(sym)}?interval=${this.nativeIntervalSetting}&range=${this.nativeRangeSetting}`;
+
+        // Try multiple CORS proxies in order until one works
+        const proxies = [
+          `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
+          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(yahooUrl)}`
+        ];
+
+        let rootData = null;
+        for (const proxyUrl of proxies) {
+          try {
+            const resp = await fetch(proxyUrl, { signal: AbortSignal.timeout(8000) });
+            if (!resp.ok) continue;
+            const json = await resp.json();
+            // Validate the response has the expected structure
+            if (json?.chart?.result?.[0]?.timestamp) {
+              rootData = json;
+              break;
+            }
+          } catch (e) {
+            console.warn(`Proxy failed: ${proxyUrl}`, e.message);
+            continue;
+          }
+        }
+
+        if (!rootData) {
+          // Show error state on chart canvas
+          const candleBox = document.getElementById("chart-canvas-container");
+          if (candleBox) candleBox.innerHTML = `<div class="chart-status-msg"><span style="color:#f85149;">⚠ Chart data unavailable — CORS proxy blocked</span><span style="font-size:0.72rem; margin-top:0.25rem;">Price data still accessible above</span></div>`;
+          return;
+        }
+
         try {
-          const response = await fetch(targetUrl);
-          const rootDataPayload = await response.json();
-          const targetNodeResult = rootDataPayload.chart.result[0];
-          
-          const timeTicks = targetNodeResult.timestamp;
-          const matrixQuotes = targetNodeResult.indicators.quote[0];
-          
+          const result = rootData.chart.result[0];
+          const timeTicks = result.timestamp;
+          const quotes = result.indicators.quote[0];
+
           this.nativeChartRawDataset = [];
-          
-          // Rebuild standardized timeline structures from raw proxy streams
-          for(let i = 0; i < timeTicks.length; i++) {
-            if(matrixQuotes.close[i] == null || matrixQuotes.open[i] == null) continue;
-            
+          for (let i = 0; i < timeTicks.length; i++) {
+            if (quotes.close[i] == null || quotes.open[i] == null) continue;
             this.nativeChartRawDataset.push({
               time: timeTicks[i],
-              open: parseFloat(matrixQuotes.open[i]),
-              high: parseFloat(matrixQuotes.high[i]),
-              low: parseFloat(matrixQuotes.low[i]),
-              close: parseFloat(matrixQuotes.close[i]),
-              volume: matrixQuotes.volume[i] ? parseFloat(matrixQuotes.volume[i]) : 0
+              open:   parseFloat(quotes.open[i]),
+              high:   parseFloat(quotes.high[i]),
+              low:    parseFloat(quotes.low[i]),
+              close:  parseFloat(quotes.close[i]),
+              volume: quotes.volume[i] ? parseFloat(quotes.volume[i]) : 0
             });
           }
-          
           this.refreshNativeCanvasChartDisplayLayers();
-
-        } catch(err) {
-          console.error("High density data stream pipeline failed to bind tracking units.", err);
+        } catch (err) {
+          console.error("Chart data parse error.", err);
+          const candleBox = document.getElementById("chart-canvas-container");
+          if (candleBox) candleBox.innerHTML = `<div class="chart-status-msg"><span style="color:#f85149;">⚠ Chart parse error</span></div>`;
         }
       },
+      // ─────────────────────────────────────────────────────────────────────────
 
       refreshNativeCanvasChartDisplayLayers() {
-        if(!this.nativeMainCandleSeries || this.nativeChartRawDataset.length === 0) return;
-
+        if (!this.nativeMainCandleSeries || this.nativeChartRawDataset.length === 0) return;
         this.nativeMainCandleSeries.setData(this.nativeChartRawDataset);
-        
-        const volumeMappedSeries = this.nativeChartRawDataset.map(item => ({
+        const volData = this.nativeChartRawDataset.map(item => ({
           time: item.time,
           value: item.volume,
-          color: item.close >= item.open ? 'rgba(46, 160, 67, 0.25)' : 'rgba(248, 81, 73, 0.25)'
+          color: item.close >= item.open ? 'rgba(46,160,67,0.25)' : 'rgba(248,81,73,0.25)'
         }));
-        this.nativeVolumeSeries.setData(volumeMappedSeries);
-
+        this.nativeVolumeSeries.setData(volData);
         this.nativeChartInstance.timeScale().fitContent();
         this.nativeVolChartInstance.timeScale().fitContent();
-
-        // Restore dynamic tracking components across updates
         this.nativeActiveMAIndicators.forEach(period => this.generateNativeMAComputationLine(period));
       },
 
       setNativeRange(rangeVal, intervalVal, btnId) {
         this.nativeRangeSetting = rangeVal;
         this.nativeIntervalSetting = intervalVal;
-        
         document.querySelectorAll(".native-ctrl-row button").forEach(b => {
-          if(b.id.startsWith("range-btn")) b.classList.remove("active");
+          if (b.id.startsWith("range-btn")) b.classList.remove("active");
         });
         document.getElementById(btnId).classList.add("active");
-        
         this.fetchNativeProxyChartStream();
       },
 
       toggleNativeMA(period, btnId) {
-        const button = document.getElementById(btnId);
-        if(this.nativeActiveMAIndicators.has(period)) {
+        const btn = document.getElementById(btnId);
+        if (this.nativeActiveMAIndicators.has(period)) {
           this.nativeActiveMAIndicators.delete(period);
-          button.classList.remove("active");
-          if(this.nativeMASeriesMap[period]) {
+          btn.classList.remove("active");
+          if (this.nativeMASeriesMap[period]) {
             this.nativeChartInstance.removeSeries(this.nativeMASeriesMap[period]);
             delete this.nativeMASeriesMap[period];
           }
         } else {
           this.nativeActiveMAIndicators.add(period);
-          button.classList.add("active");
+          btn.classList.add("active");
           this.generateNativeMAComputationLine(period);
         }
       },
 
       generateNativeMAComputationLine(period) {
-        if(!this.nativeChartInstance || this.nativeChartRawDataset.length < period) return;
-        
-        // Remove existing mathematical configurations if duplicated
-        if(this.nativeMASeriesMap[period]) {
-          this.nativeChartInstance.removeSeries(this.nativeMASeriesMap[period]);
-        }
+        if (!this.nativeChartInstance || this.nativeChartRawDataset.length < period) return;
+        if (this.nativeMASeriesMap[period]) this.nativeChartInstance.removeSeries(this.nativeMASeriesMap[period]);
 
-        const lineTrackColor = period === 20 ? '#db6d28' : '#b388ff';
-        const lineSeriesPointer = this.nativeChartInstance.addLineSeries({
-          color: lineTrackColor,
-          lineWidth: 1.5,
-          title: `EMA ${period}`
-        });
-
-        const computedMAData = [];
+        const color = period === 20 ? '#db6d28' : '#b388ff';
+        const lineSeries = this.nativeChartInstance.addLineSeries({ color, lineWidth: 1.5, title: `EMA ${period}` });
+        const maData = [];
         for (let i = period - 1; i < this.nativeChartRawDataset.length; i++) {
-          const calculationSlice = this.nativeChartRawDataset.slice(i - period + 1, i + 1);
-          const aggregationSum = calculationSlice.reduce((accumulator, node) => accumulator + node.close, 0);
-          computedMAData.push({
-            time: this.nativeChartRawDataset[i].time,
-            value: aggregationSum / period
-          });
+          const slice = this.nativeChartRawDataset.slice(i - period + 1, i + 1);
+          const avg = slice.reduce((a, n) => a + n.close, 0) / period;
+          maData.push({ time: this.nativeChartRawDataset[i].time, value: avg });
         }
-
-        lineSeriesPointer.setData(computedMAData);
-        this.nativeMASeriesMap[period] = lineSeriesPointer;
+        lineSeries.setData(maData);
+        this.nativeMASeriesMap[period] = lineSeries;
       },
 
       teardownNativeChartArchitecture() {
-        if(this.nativeChartInstance) { this.nativeChartInstance.remove(); this.nativeChartInstance = null; }
-        if(this.nativeVolChartInstance) { this.nativeVolChartInstance.remove(); this.nativeVolChartInstance = null; }
+        if (this.nativeChartInstance) { this.nativeChartInstance.remove(); this.nativeChartInstance = null; }
+        if (this.nativeVolChartInstance) { this.nativeVolChartInstance.remove(); this.nativeVolChartInstance = null; }
         this.nativeMainCandleSeries = null;
         this.nativeVolumeSeries = null;
         this.nativeMASeriesMap = {};
       },
 
-      /**
-       * Dynamically Updated Capital Real-time Computational Systems.
-       */
       updateTradeModeConfiguration(mode, domElement) {
         this.tradeMode = mode;
         document.getElementById("toggle-buy").classList.toggle("active", mode === "buy");
         document.getElementById("toggle-sell").classList.toggle("active", mode === "sell");
-        
         const sliderWrapper = document.getElementById("sell-slider-wrapper");
-        const operationalLabel = document.getElementById("calc-preview-label");
-        
-        if(mode === "buy") {
+        const label = document.getElementById("calc-preview-label");
+        if (mode === "buy") {
           sliderWrapper.classList.add("hidden");
-          operationalLabel.textContent = "Estimated Allocation Debit";
+          label.textContent = "Estimated Allocation Debit";
         } else {
           sliderWrapper.classList.remove("hidden");
-          operationalLabel.textContent = "Estimated Liquidation Credit";
+          label.textContent = "Estimated Liquidation Credit";
           this.syncAllocationPercentageSliderContext();
         }
         this.runTradeCalculationPreview();
       },
 
       processSellPercentageSliderAdjustment(percentage) {
-        if(!this.tradeAsset) return;
-        const totalOwnedSharesInInventory = this.userPositionsCache[this.tradeAsset.symbol] || 0;
-        const mathematicallyDerivedUnits = (parseInt(percentage) / 100) * totalOwnedSharesInInventory;
-        
-        document.getElementById("trade-qty-input").value = mathematicallyDerivedUnits > 0 ? mathematicallyDerivedUnits.toFixed(4) : "";
-        document.getElementById("slider-max-display").textContent = `${percentage}% (Owned Units: ${totalOwnedSharesInInventory.toFixed(4)})`;
+        if (!this.tradeAsset) return;
+        const owned = this.userPositionsCache[this.tradeAsset.symbol] || 0;
+        const units = (parseInt(percentage) / 100) * owned;
+        document.getElementById("trade-qty-input").value = units > 0 ? units.toFixed(4) : "";
+        document.getElementById("slider-max-display").textContent = `${percentage}% (Owned Units: ${owned.toFixed(4)})`;
         this.runTradeCalculationPreview();
       },
 
       runTradeCalculationPreview() {
-        if(!this.tradeAsset) {
+        if (!this.tradeAsset) {
           document.getElementById("prev-cost").textContent = "$0.00";
           document.getElementById("prev-residual").textContent = "$" + (this.activeUser ? this.activeUser.cash.toFixed(2) : "0.00");
           return;
         }
+        const qty = parseFloat(document.getElementById("trade-qty-input").value) || 0;
+        const localCost = qty * this.tradeAsset.price;
+        let usdCost = localCost;
+        if (this.tradeAsset.currency === "INR") usdCost = localCost / 84.00;
 
-        const totalInputVolumeUnits = parseFloat(document.getElementById("trade-qty-input").value) || 0;
-        
-        // Execute dynamic math inside base currency constraints before printing
-        const localizedCapitalCostSum = totalInputVolumeUnits * this.tradeAsset.price;
-        
-        // Convert localized costs back to global base tracking pools ($ USD) to update residual liquidity cards
-        let universalBaseDebitConversionCost = localizedCapitalCostSum;
-        if(this.tradeAsset.currency === "INR") {
-          // Approximate conversion metrics for dynamic estimation checks ($1 = ₹84.00 base standard)
-          universalBaseDebitConversionCost = localizedCapitalCostSum / 84.00;
-        }
+        const residual = this.tradeMode === "buy"
+          ? this.activeUser.cash - usdCost
+          : this.activeUser.cash + usdCost;
 
-        const projectedLeftoverReserveBalance = this.tradeMode === "buy" 
-          ? this.activeUser.cash - universalBaseDebitConversionCost 
-          : this.activeUser.cash + universalBaseDebitConversionCost;
-
-        const assetCurrencyPrefixSymbol = this.tradeAsset.currency === "INR" ? "₹" : "$";
-        document.getElementById("prev-cost").textContent = assetCurrencyPrefixSymbol + localizedCapitalCostSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        
-        const balanceDisplayElement = document.getElementById("prev-residual");
-        balanceDisplayElement.textContent = "$" + projectedLeftoverReserveBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        balanceDisplayElement.className = projectedLeftoverReserveBalance < 0 ? "loss" : "";
+        const cs = this.tradeAsset.currency === "INR" ? "₹" : "$";
+        document.getElementById("prev-cost").textContent = cs + localCost.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+        const balEl = document.getElementById("prev-residual");
+        balEl.textContent = "$" + residual.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+        balEl.className = residual < 0 ? "loss" : "";
       },
 
-      /**
-       * Backend API Order Execution Dispatchers.
-       */
       async dispatchOrderBlockToBackend() {
         if (!this.tradeAsset) return;
-        
-        const dispatchUnitsVolumeInput = parseFloat(document.getElementById("trade-qty-input").value) || 0;
-        if(dispatchUnitsVolumeInput <= 0) {
-          alert("Specify a valid volume payload load to execute operations.");
-          return;
-        }
+        const qty = parseFloat(document.getElementById("trade-qty-input").value) || 0;
+        if (qty <= 0) { alert("Specify a valid volume payload load to execute operations."); return; }
 
-        const targetActionButton = document.getElementById("btn-dispatch-order");
-        targetActionButton.disabled = true;
-        targetActionButton.textContent = "DISPATCHING NODE TRANSACTION BLOCK...";
+        const btn = document.getElementById("btn-dispatch-order");
+        btn.disabled = true;
+        btn.textContent = "DISPATCHING NODE TRANSACTION BLOCK...";
 
         try {
           const res = await fetch('/api/trade/execute', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              symbol: this.tradeAsset.symbol,
-              qty: dispatchUnitsVolumeInput,
-              mode: this.tradeMode,
-              price: this.tradeAsset.price
-            })
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ symbol: this.tradeAsset.symbol, qty, mode: this.tradeMode, price: this.tradeAsset.price })
           });
-          
           const data = await res.json();
-          if(!res.ok) {
-            alert("Order compilation failed: " + (data.error || "Execution parameters mismatch."));
-          } else {
+          if (!res.ok) alert("Order compilation failed: " + (data.error || "Execution parameters mismatch."));
+          else {
             alert("Desk transaction confirmation finalized successfully!");
             this.tradeAsset = null;
             this.teardownNativeChartArchitecture();
             await this.switchWorkspaceView("view-portfolio");
           }
-        } catch(e) {
-          alert("Network execution failure. Terminal order revoked.");
-        } finally {
-          targetActionButton.disabled = false;
-          targetActionButton.textContent = "DISPATCH TRANSACTION TO DESK";
-        }
+        } catch(e) { alert("Network execution failure. Terminal order revoked."); }
+        finally { btn.disabled = false; btn.textContent = "DISPATCH TRANSACTION TO DESK"; }
       },
 
-      /**
-       * Leaderboard Dynamic Rankings Matrix Sync System.
-       */
       async syncLeaderboardView() {
         try {
           const res = await fetch('/api/leaderboard');
-          const rankingDataset = await res.json();
-          const ranksTableBody = document.getElementById("leaderboard-ranking-table");
-          ranksTableBody.innerHTML = "";
-          
-          rankingDataset.forEach((trader, idx) => {
+          const data = await res.json();
+          const body = document.getElementById("leaderboard-ranking-table");
+          body.innerHTML = "";
+          data.forEach((trader, idx) => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
               <td><strong>#${idx + 1}</strong></td>
               <td style="font-weight:500;">${trader.name} <span style="color:var(--text-dim); font-size:0.78rem; font-family:var(--font-mono); font-weight:400; margin-left:5px;">@${trader.handle}</span></td>
-              <td>$${trader.cash.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+              <td>$${trader.cash.toLocaleString(undefined, {minimumFractionDigits:2})}</td>
               <td style="font-weight:700;" class="${trader.returns >= 0 ? 'gain' : 'loss'}">${trader.returns >= 0 ? '+' : ''}${trader.returns.toFixed(2)}%</td>
             `;
-            ranksTableBody.appendChild(tr);
+            body.appendChild(tr);
           });
-        } catch(err) {
-          console.error("Leaderboard interface retrieval failed.", err);
-        }
+        } catch(err) { console.error("Leaderboard sync failed.", err); }
       },
 
-      /**
-       * Scrolling Live Broadcast Tape Engine Module.
-       */
       runTickerTapeBroadcast() {
         const container = document.getElementById("app-ticker-tape-container");
         if (!container) return;
-        
-        const coreTrackMatrix = [
-          { t: "RELIANCE", s: "₹2,450.50" },
-          { t: "NIFTY 50", s: "₹23,120.40" },
-          { t: "TSLA US", s: "$404.25" },
-          { t: "AAPL US", s: "$182.10" },
-          { t: "NVDA US", s: "$875.12" },
-          { t: "NASDAQ INDEX", s: "$16,210.80" }
+        const track = [
+          { t: "RELIANCE", s: "₹2,450.50" }, { t: "NIFTY 50", s: "₹23,120.40" },
+          { t: "TSLA US", s: "$404.25" },    { t: "AAPL US", s: "$182.10" },
+          { t: "NVDA US", s: "$875.12" },    { t: "NASDAQ INDEX", s: "$16,210.80" }
         ];
-        
         container.innerHTML = "";
-        
-        // Duplicate data array nodes internally to build an uninterrupted animation loop
-        const unifiedBroadcastTrack = [...coreTrackMatrix, ...coreTrackMatrix, ...coreTrackMatrix];
-        
-        unifiedBroadcastTrack.forEach(item => {
-          const tickerBlock = document.createElement("div");
-          tickerBlock.className = "tt-item";
-          tickerBlock.innerHTML = `<span class="tt-sym">${item.t}</span> <span class="tt-price">${item.s}</span> <span>[NODE STEADY]</span>`;
-          container.appendChild(tickerBlock);
+        [...track, ...track, ...track].forEach(item => {
+          const el = document.createElement("div");
+          el.className = "tt-item";
+          el.innerHTML = `<span class="tt-sym">${item.t}</span> <span class="tt-price">${item.s}</span> <span>[NODE STEADY]</span>`;
+          container.appendChild(el);
         });
       }
     };
 
-    // SYSTEM DESK INITIALIZATION BOOT STRAP EVENT TRIGGER
     document.addEventListener("DOMContentLoaded", () => App.init());
   </script>
 </body>
