@@ -390,26 +390,20 @@
             <h1 class="view-title">Account Valuation Ledger</h1>
             <p class="view-sub">System balance tracking modules and live net liquidity matrix</p>
           </div>
-          <div id="india-market-status-badge" style="font-family: var(--font-mono); font-size:0.8rem; background: var(--bg-card); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: var(--radius-md); text-align: right;">
-            <span style="color: var(--text-secondary)">NSE/BSE IST Clock:</span> <span id="india-market-text" class="loss">Checking Stream...</span>
-          </div>
         </div>
         
         <div class="kpi-strip">
           <div class="kpi-card">
             <div class="kpi-lbl-flex">Net Liquidation Pool <span class="help-tooltip" title="Total current dynamic valuation including fluid cash combined with live equity market values.">?</span></div>
             <div class="kpi-val" id="p-kpi-total">$0.00</div>
-            <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" id="p-kpi-total-inr">₹0.00</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-lbl-flex">Uncommitted Margin Cash <span class="help-tooltip" title="Liquid cash instantly expendable to establish new equity buy configurations.">?</span></div>
             <div class="kpi-val" id="p-kpi-cash">$0.00</div>
-            <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" id="p-kpi-cash-inr">₹0.00</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-lbl-flex">Active Asset Committals <span class="help-tooltip" title="Aggregate real-time evaluation of total capital locked inside ongoing security metrics.">?</span></div>
             <div class="kpi-val" id="p-kpi-invested">$0.00</div>
-            <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" id="p-kpi-invested-inr">₹0.00</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-lbl-flex">Yield Performance Index <span class="help-tooltip" title="Dynamic account growth metrics calculated against baseline structural seed allocations.">?</span></div>
@@ -446,12 +440,9 @@
             <h1 class="view-title">Trade Execution Station</h1>
             <p class="view-sub">Plain text linguistic routing interface -- AI asset determination framework</p>
           </div>
-          <div style="font-family: var(--font-mono); font-size:0.9rem; font-weight:700; background: var(--bg-card); border: 1px solid var(--border); padding: 0.65rem 1.25rem; border-radius: var(--radius-md); text-align: right;" id="trade-cash-badge">
-            <div id="trade-cash-usd">Uncommitted: $0.00</div>
-            <div id="trade-cash-inr" style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal; margin-top: 0.15rem;">₹0.00</div>
-          </div>
+          <div style="font-family: var(--font-mono); font-size:0.9rem; font-weight:700; background: var(--bg-card); border: 1px solid var(--border); padding: 0.65rem 1.25rem; border-radius: var(--radius-md);" id="trade-cash-badge">Uncommitted: $0.00</div>
         </div>
-
+        
         <div class="card search-card">
           <div class="filter-strip">
             <button class="filter-btn active" data-filter="all">Universal Matrix</button>
@@ -462,7 +453,7 @@
           <div class="trending-grid" id="trending-pills-box"></div>
           
           <div class="form-group search-container">
-            <label class="form-label">Search anything (e.g. "tsla", "reliance share price", "infy.ns", "tata motors options")</label>
+            <label class="form-label">Search anything (e.g. "tsla", "reliance share price", "infy.ns", "microsoft query")</label>
             <div style="display: flex; gap: 0.75rem;">
               <input type="text" class="form-input" id="trade-search-input" placeholder="Enter corporate designation, industrial sector, or asset tracking code..." autocomplete="off" />
               <button class="btn-primary" id="btn-fetch-ticker" style="width: auto; padding: 0 2rem;">QUERY LOOKUP</button>
@@ -485,64 +476,67 @@
 
           <div class="trade-layout-grid">
             <div class="card" style="display: flex; flex-direction: column; padding: 1.25rem;">
-              <h3 class="card-title" style="margin-bottom: 0.75rem;">Chart Stream Visualization Matrix</h3>
+              <h3 class="card-title" style="margin-left:0.75rem; margin-top:0.5rem;">DYNAMIC FLOW GRAPH VISUALIZATION</h3>
               <div class="chart-box-wrapper">
-                <div id="tradingview-chart-container" class="hidden"></div>
-                <div id="native-chart-wrapper">
+                <div id="tradingview-chart-container"></div>
+                
+                <div id="native-chart-wrapper" class="hidden">
                   <div class="native-ctrl-row">
-                    <button class="active" data-span="1d">1D Live</button>
-                    <button data-span="1w">1W</button>
-                    <button data-span="1m">1M Slate</button>
-                    <button data-span="1y">1Y Map</button>
-                    <div style="flex-grow:1;"></div>
-                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--text-dim);" id="native-chart-ticker-meta">ENGINE FEED: READY</span>
+                    <button id="range-btn-1y" class="active" onclick="App.setNativeRange('1y','1d','range-btn-1y')">1 YEAR OUT</button>
+                    <button id="range-btn-1d" onclick="App.setNativeRange('1d','2m','range-btn-1d')">INTRADAY ZOOM</button>
+                    <div style="width: 1px; height: 16px; background: #30363d; margin: 0 0.5rem;"></div>
+                    <button id="ma-btn-20" onclick="App.toggleNativeMA(20, 'ma-btn-20')">EXPONENTIAL MA20</button>
+                    <button id="ma-btn-50" onclick="App.toggleNativeMA(50, 'ma-btn-50')">EXPONENTIAL MA50</button>
                   </div>
-                  <div id="chart-canvas-container">
-                    <canvas id="canvas-candles" style="position:absolute; inset:0; width:100%; height:100%;"></canvas>
-                  </div>
-                  <div id="vol-canvas-container">
-                    <canvas id="canvas-volume" style="position:absolute; inset:0; width:100%; height:100%;"></canvas>
-                  </div>
+                  <div id="chart-canvas-container"></div>
+                  <div id="vol-canvas-container"></div>
                 </div>
               </div>
             </div>
 
-            <div class="card" style="display: flex; flex-direction: column;">
-              <h3 class="card-title">Order Entry Console</h3>
-              
-              <div class="trade-toggle">
-                <button class="toggle-btn active" id="toggle-buy" data-mode="buy">BUY ASSET</button>
-                <button class="toggle-btn" id="toggle-sell" data-mode="sell">SELL POOL</button>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" id="lbl-trade-qty">Shares Allocation Quantity</label>
-                <input type="number" class="form-input" id="trade-qty-input" step="any" placeholder="0.00" min="0.0001" />
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+              <div class="card">
+                <h3 class="card-title">CONFIGURATION PANEL</h3>
+                <div class="trade-toggle">
+                  <button class="toggle-btn active" data-mode="buy" id="toggle-buy">ACQUIRE (BUY)</button>
+                  <button class="toggle-btn" data-mode="sell" id="toggle-sell">LIQUIDATE (SELL)</button>
+                </div>
                 
-                <div class="slider-row" id="sell-slider-wrapper">
-                  <input type="range" class="form-range-input" id="trade-qty-slider" min="0" max="100" value="0" />
-                  <span class="slider-max-lbl" id="slider-max-display">0%</span>
+                <div class="form-group">
+                  <label class="form-label" id="qty-box-label">TRANSACTION CAPACITY QUANTITY</label>
+                  <input type="number" class="form-input" id="trade-qty-input" step="any" min="0.0001" placeholder="Specify unit load metrics..." />
+                  
+                  <div id="sell-slider-wrapper" class="hidden" style="margin-top: 1rem;">
+                    <label class="form-label" style="color: var(--text-dim);">Portfolio Allocation Liquidation %</label>
+                    <div class="slider-row">
+                      <input type="range" class="form-range-input" id="trade-qty-slider" min="0" max="100" value="0" />
+                      <span class="slider-max-lbl" id="slider-max-display">0%</span>
+                    </div>
+                  </div>
                 </div>
+
+                <div style="background: var(--bg-input); padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.88rem;">
+                  <div style="display:flex; justify-content: space-between; margin-bottom: 0.6rem;">
+                    <span id="calc-preview-label">Estimated Allocation Debit</span>
+                    <span id="prev-cost">$0.00</span>
+                  </div>
+                  <div style="display:flex; justify-content: space-between; border-top: 1px dashed var(--border-bright); padding-top: 0.6rem;">
+                    <span>Residual Capital Balance</span>
+                    <span id="prev-residual">$0.00</span>
+                  </div>
+                </div>
+                <button class="btn-primary" id="btn-dispatch-order">DISPATCH TRANSACTION TO DESK</button>
               </div>
 
-              <div style="background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.82rem;">
-                <div style="display: flex; justify-content: space-between;">
-                  <span style="color: var(--text-secondary);">Calculated Principal:</span>
-                  <span id="preview-est-principal">--</span>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                  <span style="color: var(--text-secondary);">Estimated Tax Buffer:</span>
-                  <span>$0.00</span>
-                </div>
-                <hr style="border: none; border-top: 1px dashed var(--border); margin: 0.25rem 0;" />
-                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem;">
-                  <span style="color: var(--text-primary);">Total Capital Output:</span>
-                  <span id="preview-est-total" class="gain">--</span>
+              <div class="card">
+                <h3 class="card-title">TELEMETRY DATA</h3>
+                <div style="display:grid; grid-template-columns: 1fr; gap:0.4rem; font-family:var(--font-mono); font-size:0.88rem;">
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.6rem 0;"><span>Desk Asset Index Price:</span><span id="t-stat-price">--</span></div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.6rem 0;"><span>Station Low Range:</span><span id="t-stat-low">--</span></div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.6rem 0;"><span>Station High Range:</span><span id="t-stat-high">--</span></div>
+                  <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-input); padding:0.6rem 0;"><span>System Identity Signature:</span><span id="t-stat-rawtoken" style="color: var(--text-secondary); font-size: 0.8rem;">--</span></div>
                 </div>
               </div>
-
-              <div id="trade-dispatch-error" class="form-error hidden"></div>
-              <button class="btn-primary" id="btn-dispatch-order">TRANSMIT ORDER BLOCK</button>
             </div>
           </div>
         </div>
@@ -551,23 +545,22 @@
       <section id="view-history" class="view-panel hidden">
         <div class="view-header">
           <div>
-            <h1 class="view-title">Audit Ledger System</h1>
-            <p class="view-sub">Chronological transaction logs signed by local ledger hashes</p>
+            <h1 class="view-title">Transaction Audit Registers</h1>
+            <p class="view-sub">Unalterable cryptographic sequence records of all telemetry orders handled by desk nodes</p>
           </div>
         </div>
         <div class="card">
-          <h2 class="card-title">Historical Execution Tracks</h2>
           <div class="table-container">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Timestamp</th>
-                  <th>Asset Target</th>
-                  <th>Action Context</th>
-                  <th>Quantity Size</th>
-                  <th>Execution Price</th>
-                  <th>Total Cost Settlement</th>
-                  <th>Realized Yield P&amp;L</th>
+                  <th>Timestamp Execution</th>
+                  <th>Vector Class</th>
+                  <th>Target Code Symbol</th>
+                  <th>Unit Capacity Load</th>
+                  <th>Unit Strike Price</th>
+                  <th>Total Liquid Capital Cost</th>
+                  <th>Realized Capital Delta</th>
                 </tr>
               </thead>
               <tbody id="history-logs-table"></tbody>
@@ -579,24 +572,22 @@
       <section id="view-leaderboard" class="view-panel hidden">
         <div class="view-header">
           <div>
-            <h1 class="view-title">Institutional Standing Pool</h1>
-            <p class="view-sub">Global rating metrics indexed against real-time liquid net value</p>
+            <h1 class="view-title">Global Operator Rank Ledger</h1>
+            <p class="view-sub">Public validation matrix sorted by return yield percentages</p>
           </div>
         </div>
         <div class="card">
-          <h2 class="card-title">Active Operator Matrix Rank</h2>
           <div class="table-container">
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Rank Pointer</th>
-                  <th>Operator Signature Identifier</th>
-                  <th>Total Liquid Capital Pool</th>
-                  <th>Yield Delta Scale</th>
-                  <th>Dispatched Commits Counter</th>
+                  <th>Rank Index</th>
+                  <th>Identity Operator Profile</th>
+                  <th>Liquid Spendable Reserve Pools</th>
+                  <th>Lifetime Growth Yield Index</th>
                 </tr>
               </thead>
-              <tbody id="leaderboard-ranks-table"></tbody>
+              <tbody id="leaderboard-ranking-table"></tbody>
             </table>
           </div>
         </div>
@@ -605,607 +596,828 @@
       <section id="view-settings" class="view-panel hidden">
         <div class="view-header">
           <div>
-            <h1 class="view-title">Desk Workspace Configurations</h1>
-            <p class="view-sub">Manage system display presets and parameters</p>
+            <h1 class="view-title">Terminal Display Protocols</h1>
+            <p class="view-sub">Reconfigure user interface render pipelines and presentation setups</p>
           </div>
         </div>
-        
         <div class="card">
-          <h2 class="card-title">Color Layer Ecosystem Controls</h2>
+          <h3 class="card-title">Workspace Color Matrix</h3>
           <div class="theme-switch-row">
-            <div>
-              <div style="font-weight: 700; font-size: 1rem;">Toggle Interface Themes</div>
-              <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top:0.15rem;">Switch seamlessly between dark-ops matrix overlay or light workspace ecosystems.</div>
-            </div>
-            <button class="filter-btn" id="btn-toggle-theme-switch" style="padding: 0.75rem 1.5rem; font-weight: bold;">LIGHT THEME ECO</button>
+            <span style="font-family: var(--font-mono); font-size: 0.95rem;">Alternate between Dark System or Eco Light presentations</span>
+            <button class="btn-primary" id="btn-toggle-theme-mode" style="width: auto; padding: 0.65rem 2rem;">ECO LIGHT MODE</button>
           </div>
         </div>
       </section>
-
     </main>
 
-    <footer class="ticker-tape-wrap">
+    <div class="ticker-tape-wrap">
       <div class="ticker-tape" id="app-ticker-tape-container"></div>
-    </footer>
-
+    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
   <script>
     /**
-     * =========================================================================
-     * STOCKSIM CENTRAL DESK CORE RUNTIME OPERATOR INTERFACE
-     * =========================================================================
+     * @namespace App
+     * @description Core frontend single object design architecture engine. Handles all component bindings, local currency matrices, dynamic light weight charts, and API proxies.
      */
     const App = {
-      user: null,
-      activeView: "view-portfolio",
-      tradeAsset: null, // Holds complete structured quote parameters
-      tradeMode: "buy", // "buy" or "sell"
+      // TRACKING STATE OBJECTS
+      activeUser: null,
+      tradeMode: "buy",
+      tradeAsset: null,
+      currentCategoryFilter: "all",
       userPositionsCache: {},
-      conversionPeg: 83.50, // Updated dynamically by server status check loops
 
-      trendingAssets: [
-        { sym: "RELIANCE.NS", lbl: "Reliance Industries [NSE]", f: "india" },
-        { sym: "TCS.NS", lbl: "Tata Consultancy [NSE]", f: "india" },
-        { sym: "INFY.NS", lbl: "Infosys Technologies [NSE]", f: "india" },
-        { sym: "TATAMOTORS.NS", lbl: "Tata Motors Ltd [NSE]", f: "india" },
-        { sym: "TSLA", lbl: "Tesla Inc. [US Equities]", f: "tech" },
-        { sym: "NVDA", lbl: "NVIDIA Corp. [US Tech]", f: "tech" },
-        { sym: "AAPL", lbl: "Apple Computer [US Equities]", f: "tech" },
-        { sym: "^NSEI", lbl: "NIFTY 50 Index", f: "crypto" },
-        { sym: "^BSESN", lbl: "SENSEX Index Baseline", f: "crypto" },
-        { sym: "^IXIC", lbl: "NASDAQ Composite Index", f: "crypto" }
+      // NATIVE LIGHTWEIGHT CHART POINTER CONTAINERS
+      nativeChartInstance: null,
+      nativeVolChartInstance: null,
+      nativeMainCandleSeries: null,
+      nativeVolumeSeries: null,
+      nativeActiveMAIndicators: new Set(),
+      nativeMASeriesMap: {},
+      nativeRangeSetting: "1y",
+      nativeIntervalSetting: "1d",
+      nativeChartRawDataset: [],
+
+      // STANDARD SYSTEM AUTOSUGGESTS MATRIX DATASET
+      trendingData: [
+        { sym: "RELIANCE.NS", name: "Reliance Industries", cat: "india" },
+        { sym: "TCS.NS", name: "Tata Consultancy Services", cat: "india" },
+        { sym: "INFY.NS", name: "Infosys Limited", cat: "india" },
+        { sym: "HDFCBANK.NS", name: "HDFC Bank Limited", cat: "india" },
+        { sym: "ICICIBANK.NS", name: "ICICI Bank Limited", cat: "india" },
+        { sym: "AAPL", name: "Apple Incorporated", cat: "tech" },
+        { sym: "NVDA", name: "NVIDIA Corporation", cat: "tech" },
+        { sym: "MSFT", name: "Microsoft Corporation", cat: "tech" },
+        { sym: "TSLA", name: "Tesla Incorporated", cat: "tech" },
+        { sym: "AMZN", name: "Amazon.com Incorporated", cat: "tech" },
+        { sym: "^NSEI", name: "NSE Nifty 50 Index", cat: "crypto" },
+        { sym: "^BSESN", name: "BSE Sensex Core", cat: "crypto" },
+        { sym: "^IXIC", name: "NASDAQ Composite Index", cat: "crypto" },
+        { sym: "^DJI", name: "Dow Jones Industrial Base", cat: "crypto" }
       ],
 
+      /**
+       * Primary Core Boot Initializer.
+       */
       init() {
-        this.setupEventHandlers();
-        this.checkSessionUplink();
-        this.renderTrendingPills("all");
-        this.startBackgroundMetricsDaemon();
+        this.runTickerTapeBroadcast();
+        this.switchAuthTab("login");
+        this.renderTrendingPills();
+        this.bindCategoryFilterSelectors();
+        this.configureWorkspaceThemeSystem();
+        this.bindUserEventInteractions();
       },
 
       /**
-       * Beautiful Janky Indian Currency Formatter (Lakhs & Crores Client Parsing Rules)
+       * Local Event Binder Layer Engine.
        */
-      formatIndianCurrency(number) {
-        try {
-          let s = parseFloat(number).toFixed(2);
-          let parts = s.split('.');
-          let beforeDot = parts[0];
-          let afterDot = parts[1] ? '.' + parts[1] : '.00';
-          
-          let lastThree = beforeDot.substring(beforeDot.length - 3);
-          let otherNumbers = beforeDot.substring(0, beforeDot.length - 3);
-          if (otherNumbers !== '') {
-            lastThree = ',' + lastThree;
-          }
-          let res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-          return "₹" + res + afterDot;
-        } catch (e) {
-          return "₹" + parseFloat(number).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-      },
-
-      /**
-       * Universal Smart Display Money Parsing Layer
-       */
-      formatCurrencyContext(amount, currency) {
-        if (currency === "INR") {
-          return this.formatIndianCurrency(amount);
-        }
-        return "$" + parseFloat(amount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      },
-
-      setupEventHandlers() {
-        // Theme toggles
-        document.getElementById("btn-toggle-theme-switch").addEventListener("click", () => {
-          const body = document.body;
-          const isDark = body.getAttribute("data-theme") === "dark";
-          const nextTheme = isDark ? "light" : "dark";
-          body.setAttribute("data-theme", nextTheme);
-          document.getElementById("btn-toggle-theme-switch").textContent = isDark ? "DARK OPS MATRIX" : "LIGHT THEME ECO";
+      bindUserEventInteractions() {
+        document.getElementById("tab-login-toggle").addEventListener("click", () => this.switchAuthTab("login"));
+        document.getElementById("tab-reg-toggle").addEventListener("click", () => this.switchAuthTab("register"));
+        
+        document.getElementById("btn-submit-login").addEventListener("click", () => this.processLoginUplink());
+        document.getElementById("btn-submit-register").addEventListener("click", () => this.processRegisterInitialization());
+        
+        document.getElementById("btn-logout-action").addEventListener("click", () => this.terminateSessionUplink());
+        document.getElementById("btn-fetch-ticker").addEventListener("click", () => this.executeTickerQuery());
+        
+        document.getElementById("trade-search-input").addEventListener("keypress", (e) => {
+          if(e.key === "Enter") this.executeTickerQuery();
         });
 
-        // Tab views authentication handlers
-        document.getElementById("tab-login-toggle").addEventListener("click", (e) => {
-          this.switchAuthTab("login");
-        });
-        document.getElementById("tab-reg-toggle").addEventListener("click", (e) => {
-          this.switchAuthTab("register");
-        });
+        document.getElementById("toggle-buy").addEventListener("click", (e) => this.updateTradeModeConfiguration("buy", e.target));
+        document.getElementById("toggle-sell").addEventListener("click", (e) => this.updateTradeModeConfiguration("sell", e.target));
+        
+        document.getElementById("trade-qty-slider").addEventListener("input", (e) => this.processSellPercentageSliderAdjustment(e.target.value));
+        document.getElementById("trade-qty-input").addEventListener("input", () => this.runTradeCalculationPreview());
+        document.getElementById("btn-dispatch-order").addEventListener("click", () => this.dispatchOrderBlockToBackend());
 
-        // Authentication Submission APIs
-        document.getElementById("btn-submit-login").addEventListener("click", () => this.dispatchAuthAction("login"));
-        document.getElementById("btn-submit-register").addEventListener("click", () => this.dispatchAuthAction("register"));
-
-        // Sidebar Navigation Interfaces
         document.querySelectorAll(".nav-btn").forEach(btn => {
           btn.addEventListener("click", (e) => {
-            const target = e.currentTarget.getAttribute("data-target");
-            this.switchWorkspacePanel(target);
+            const target = e.target.closest('.nav-btn').dataset.target;
+            this.switchWorkspaceView(target);
           });
         });
 
-        // Global signout button action routing
-        document.getElementById("btn-logout-action").addEventListener("click", () => this.terminateSessionUplink());
+        // Dynamic Native Canvas window sizing controller
+        window.addEventListener('resize', () => {
+          if (this.tradeAsset && this.tradeAsset.provider === "yahoo" && this.nativeChartInstance) {
+            const cBox = document.getElementById("chart-canvas-container");
+            const vBox = document.getElementById("vol-canvas-container");
+            if(cBox && vBox) {
+              this.nativeChartInstance.resize(cBox.offsetWidth, 380);
+              this.nativeVolChartInstance.resize(vBox.offsetWidth, 95);
+            }
+          }
+        });
+      },
 
-        // Asset filters implementation
+      /**
+       * Themes Workspace Matrix Configurator
+       */
+      configureWorkspaceThemeSystem() {
+        const btn = document.getElementById("btn-toggle-theme-mode");
+        btn.addEventListener("click", () => {
+          const currentTheme = document.body.getAttribute("data-theme");
+          const nextTheme = currentTheme === "dark" ? "light" : "dark";
+          document.body.setAttribute("data-theme", nextTheme);
+          btn.textContent = nextTheme === "dark" ? "ECO LIGHT MODE" : "DARK MATRIX MODE";
+          
+          if(this.tradeAsset) {
+            this.renderVisualsChartModule();
+          }
+        });
+      },
+
+      /**
+       * Structural Navigator Visibility Routing View Router.
+       */
+      async switchWorkspaceView(viewId) {
+        document.querySelectorAll(".nav-btn").forEach(b => {
+          if(b.dataset.target === viewId) b.classList.add("active");
+          else b.classList.remove("active");
+        });
+        document.querySelectorAll(".view-panel").forEach(p => p.classList.add("hidden"));
+        document.getElementById(viewId).classList.remove("hidden");
+
+        if(viewId === "view-portfolio") await this.syncPortfolioView();
+        if(viewId === "view-trade") this.syncTradeView();
+        if(viewId === "view-history") await this.syncPortfolioView();
+        if(viewId === "view-leaderboard") await this.syncLeaderboardView();
+      },
+
+      /**
+       * Auth Landing Panel State Transition Trigger.
+       */
+      switchAuthTab(type) {
+        document.getElementById("login-error-box").classList.add("hidden");
+        document.getElementById("reg-error-box").classList.add("hidden");
+        if(type === "login") {
+          document.getElementById("tab-login-toggle").classList.add("active");
+          document.getElementById("tab-reg-toggle").classList.remove("active");
+          document.getElementById("form-login").classList.remove("hidden");
+          document.getElementById("form-register").classList.add("hidden");
+        } else {
+          document.getElementById("tab-reg-toggle").classList.add("active");
+          document.getElementById("tab-login-toggle").classList.remove("active");
+          document.getElementById("form-register").classList.remove("hidden");
+          document.getElementById("form-login").classList.add("hidden");
+        }
+      },
+
+      /**
+       * Auto-suggests UI Pill Builders.
+       */
+      bindCategoryFilterSelectors() {
         document.querySelectorAll(".filter-btn").forEach(btn => {
           btn.addEventListener("click", (e) => {
             document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-            e.currentTarget.classList.add("active");
-            this.renderTrendingPills(e.currentTarget.getAttribute("data-filter"));
+            e.target.classList.add("active");
+            this.currentCategoryFilter = e.target.dataset.filter;
+            this.renderTrendingPills();
           });
         });
+      },
 
-        // Plain text entry lookup dispatchers
-        document.getElementById("btn-fetch-ticker").addEventListener("click", () => this.lookupAssetQueryBlock());
-        document.getElementById("trade-search-input").addEventListener("keypress", (e) => {
-          if (e.key === "Enter") this.lookupAssetQueryBlock();
-        });
-
-        // Buy/Sell Order toggles interaction handlers
-        document.getElementById("toggle-buy").addEventListener("click", (e) => {
-          this.tradeMode = "buy";
-          document.getElementById("toggle-buy").classList.add("active");
-          document.getElementById("toggle-sell").classList.remove("active");
-          this.runTradeCalculationPreview();
-        });
-        document.getElementById("toggle-sell").addEventListener("click", (e) => {
-          this.tradeMode = "sell";
-          document.getElementById("toggle-sell").classList.add("active");
-          document.getElementById("toggle-buy").classList.remove("active");
-          this.updateSliderRangeContext();
-          this.runTradeCalculationPreview();
-        });
-
-        // Native sliding scale input monitoring logic
-        document.getElementById("trade-qty-slider").addEventListener("input", (e) => {
-          if (!this.tradeAsset) return;
-          const percentage = parseInt(e.target.value);
-          const totalOwned = this.userPositionsCache[this.tradeAsset.symbol] || 0;
-          const computedShares = (percentage / 100) * totalOwned;
-          
-          document.getElementById("trade-qty-input").value = computedShares > 0 ? computedShares.toFixed(4) : "";
-          document.getElementById("slider-max-display").textContent = `${percentage}% (Owned: ${totalOwned.toFixed(2)})`;
-          this.runTradeCalculationPreview();
-        });
+      renderTrendingPills() {
+        const container = document.getElementById("trending-pills-box");
+        container.innerHTML = "";
+        const filteredItems = this.trendingData.filter(i => this.currentCategoryFilter === "all" || i.cat === this.currentCategoryFilter);
         
-        document.getElementById("trade-qty-input").addEventListener("input", () => this.runTradeCalculationPreview());
-        document.getElementById("btn-dispatch-order").addEventListener("click", () => this.dispatchOrderBlock());
+        filteredItems.forEach(i => {
+          const pill = document.createElement("div");
+          pill.className = "trend-pill";
+          pill.innerHTML = `<div class="t-sym">${i.sym.replace('.NS','').replace('^','')}</div><div class="t-lbl">${i.name}</div>`;
+          pill.addEventListener("click", () => {
+            document.getElementById("trade-search-input").value = i.sym;
+            this.executeTickerQuery();
+          });
+          container.appendChild(pill);
+        });
       },
 
-      switchAuthTab(mode) {
-        const loginToggle = document.getElementById("tab-login-toggle");
-        const regToggle = document.getElementById("tab-reg-toggle");
-        const loginForm = document.getElementById("form-login");
-        const regForm = document.getElementById("form-register");
+      /**
+       * Network Layer Account Database Synchronizers.
+       */
+      async processRegisterInitialization() {
+        const err = document.getElementById("reg-error-box");
+        err.classList.add("hidden");
+        
+        const username = document.getElementById("in-reg-user").value.trim();
+        const displayName = document.getElementById("in-reg-display").value.trim();
+        const password = document.getElementById("in-reg-pass").value.trim();
 
-        if (mode === "login") {
-          loginToggle.classList.add("active");
-          regToggle.classList.remove("active");
-          loginForm.classList.remove("hidden");
-          regForm.classList.add("hidden");
-        } else {
-          regToggle.classList.add("active");
-          loginToggle.classList.remove("active");
-          regForm.classList.remove("hidden");
-          loginForm.classList.add("hidden");
+        if(!username || !displayName || !password) {
+          err.textContent = "All configuration field layers must be validated.";
+          err.classList.remove("hidden");
+          return;
         }
-      },
 
-      async checkSessionUplink() {
-        // Simple polling validation hack to check if cookie state registers profiles already active
         try {
-          const resp = await fetch("/api/user/portfolio");
-          if (resp.ok) {
-            this.synchronizeSystemInterfaceView();
+          const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ username, displayName, password })
+          });
+          const data = await res.json();
+          
+          if (!res.ok) {
+            err.textContent = data.error || "Uplink registration failure parameters.";
+            err.classList.remove("hidden");
           } else {
-            document.getElementById("screen-auth").classList.remove("hidden");
-            document.getElementById("screen-app").classList.add("hidden");
+            this.activeUser = data;
+            this.bootToAppWorkspace();
           }
-        } catch (err) {
-          console.error("Session authentication confirmation error node failed.", err);
+        } catch(e) {
+          err.textContent = "System hardware connection breakdown.";
+          err.classList.remove("hidden");
         }
       },
 
-      async dispatchAuthAction(actionType) {
-        const errBox = document.getElementById(`${actionType}-error-box`);
-        errBox.classList.add("hidden");
+      async processLoginUplink() {
+        const err = document.getElementById("login-error-box");
+        err.classList.add("hidden");
         
-        let payload = {};
-        let endpoint = "/api/auth/login";
+        const username = document.getElementById("in-login-user").value.trim();
+        const password = document.getElementById("in-login-pass").value.trim();
 
-        if (actionType === "login") {
-          payload.username = document.getElementById("in-login-user").value;
-          payload.password = document.getElementById("in-login-pass").value;
-        } else {
-          endpoint = "/api/auth/register";
-          payload.username = document.getElementById("in-reg-user").value;
-          payload.displayName = document.getElementById("in-reg-display").value;
-          payload.password = document.getElementById("in-reg-pass").value;
+        if(!username || !password) {
+          err.textContent = "Operator signatures cannot be transmitted blank.";
+          err.classList.remove("hidden");
+          return;
         }
 
         try {
-          const resp = await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+          const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ username, password })
           });
-          const data = await resp.json();
-          
-          if (!resp.ok) {
-            errBox.textContent = data.error || "Uplink validation fault anomaly.";
-            errBox.classList.remove("hidden");
-            return;
-          }
+          const data = await res.json();
 
-          // Complete profile routing synchronization sequences
-          this.synchronizeSystemInterfaceView();
-        } catch (err) {
-          errBox.textContent = "Fatal gateway authorization node failure.";
-          errBox.classList.remove("hidden");
+          if (!res.ok) {
+            err.textContent = data.error || "Identity clearance credentials denied.";
+            err.classList.remove("hidden");
+          } else {
+            this.activeUser = data;
+            this.bootToAppWorkspace();
+          }
+        } catch(e) {
+          err.textContent = "System connection structural error.";
+          err.classList.remove("hidden");
         }
+      },
+
+      bootToAppWorkspace() {
+        document.getElementById("screen-auth").classList.add("hidden");
+        document.getElementById("screen-app").classList.remove("hidden");
+        document.getElementById("sb-user-display").textContent = this.activeUser.displayName;
+        document.getElementById("sb-user-handle").textContent = "@" + this.activeUser.username;
+        this.switchWorkspaceView("view-portfolio");
       },
 
       async terminateSessionUplink() {
         try {
-          await fetch("/api/auth/logout", { method: "POST" });
-          window.location.reload();
-        } catch (err) {
-          alert("Uplink shutdown rejection protocol encountered.");
-        }
+          await fetch('/api/auth/logout', {method: 'POST'});
+        } catch(e) {}
+        this.activeUser = null;
+        this.tradeAsset = null;
+        this.userPositionsCache = {};
+        this.nativeChartRawDataset = [];
+        document.getElementById("screen-app").classList.add("hidden");
+        document.getElementById("screen-auth").classList.remove("hidden");
+        this.switchAuthTab("login");
       },
 
-      switchWorkspacePanel(viewId) {
-        this.activeView = viewId;
-        document.querySelectorAll(".nav-btn").forEach(btn => {
-          if (btn.getAttribute("data-target") === viewId) btn.classList.add("active");
-          else btn.classList.remove("active");
-        });
-        
-        document.querySelectorAll(".view-panel").forEach(p => p.classList.add("hidden"));
-        document.getElementById(viewId).classList.remove("hidden");
-
-        if (viewId === "view-portfolio") this.loadPortfolioBalances();
-        if (viewId === "view-history") this.loadAuditTransactionLogs();
-        if (viewId === "view-leaderboard") this.loadGlobalLeaderboardMatrix();
-      },
-
-      renderTrendingPills(filterMode) {
-        const box = document.getElementById("trending-pills-box");
-        box.innerHTML = "";
-        
-        this.trendingAssets.forEach(asset => {
-          if (filterMode !== "all" && asset.f !== filterMode) return;
-          
-          const pill = document.createElement("div");
-          pill.className = "trend-pill";
-          pill.innerHTML = `
-            <div class="t-sym">${asset.sym}</div>
-            <div class="t-lbl">${asset.lbl}</div>
-          `;
-          pill.addEventListener("click", () => {
-            document.getElementById("trade-search-input").value = asset.sym;
-            this.lookupAssetQueryBlock();
-          });
-          box.appendChild(pill);
-        });
-      },
-
-      async startBackgroundMetricsDaemon() {
-        // Continuous market ticker updates loop
-        this.runTickerTapeBroadcast();
-        this.updateMarketClockDaemon();
-        
-        setInterval(() => this.runTickerTapeBroadcast(), 60000);
-        setInterval(() => this.updateMarketClockDaemon(), 15000);
-      },
-
-      async updateMarketClockDaemon() {
+      /**
+       * Dynamic Dynamic Multi Currency Ledger UI Synchronization.
+       */
+      async syncPortfolioView() {
         try {
-          const resp = await fetch("/api/market/status");
-          if (resp.ok) {
-            const data = await resp.json();
-            this.conversionPeg = data.conversionPeg || 83.50;
-            const textNode = document.getElementById("india-market-text");
-            if (data.indiaMarket.open) {
-              textNode.className = "gain";
-              textNode.textContent = `LIVE (${data.indiaMarket.reason})`;
-            } else {
-              textNode.className = "loss";
-              textNode.textContent = `CLOSED (${data.indiaMarket.reason})`;
-            }
-          }
-        } catch(e) { console.log("Market status checking daemon tick skipped."); }
-      },
+          const res = await fetch('/api/user/portfolio');
+          if (!res.ok) return;
+          const totals = await res.json();
 
-      async synchronizeSystemInterfaceView() {
-        document.getElementById("screen-auth").add = document.getElementById("screen-auth").classList.add("hidden");
-        document.getElementById("screen-app").classList.remove("hidden");
-        
-        // Initial dashboard rendering routes loading triggers
-        this.loadPortfolioBalances();
-        this.updateMarketClockDaemon();
-      },
-
-      async loadPortfolioBalances() {
-        try {
-          const resp = await fetch("/api/user/portfolio");
-          if (!resp.ok) return;
-          const data = await resp.json();
-          
-          // Bind identity references
-          document.getElementById("sb-user-display").textContent = data.displayName;
-          document.getElementById("sb-user-handle").textContent = `@${data.username}`;
-          
-          // Map multi-currency cash variables directly to layout widgets
-          const cashUsd = data.cash_usd;
-          const cashInr = data.cash_inr;
-          const investedUsd = data.invested_usd || 0;
-          const investedInr = data.invested_inr || 0;
-          const totalUsd = cashUsd + investedUsd;
-          const totalInr = cashInr + investedInr;
-          
-          const startUsd = 10000.00;
-          const returnPct = ((totalUsd - startUsd) / startUsd) * 100;
-
-          document.getElementById("p-kpi-total").textContent = `$${totalUsd.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 })}`;
-          document.getElementById("p-kpi-total-inr").textContent = this.formatIndianCurrency(totalInr);
-          
-          document.getElementById("p-kpi-cash").textContent = `$${cashUsd.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 })}`;
-          document.getElementById("p-kpi-cash-inr").textContent = this.formatIndianCurrency(cashInr);
-          
-          document.getElementById("p-kpi-invested").textContent = `$${investedUsd.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 })}`;
-          document.getElementById("p-kpi-invested-inr").textContent = this.formatIndianCurrency(investedInr);
-          
-          const retNode = document.getElementById("p-kpi-return");
-          retNode.textContent = `${returnPct >= 0 ? '+' : ''}${returnPct.toFixed(2)}%`;
-          retNode.className = `kpi-val ${returnPct >= 0 ? 'gain' : 'loss'}`;
-
-          // Synchronize order panel sub-text labels
-          document.getElementById("trade-cash-usd").textContent = `Uncommitted: $${cashUsd.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 })}`;
-          document.getElementById("trade-cash-inr").textContent = this.formatIndianCurrency(cashInr);
-
-          // Build capital formation holdings dynamic data tables row templates
-          const tbody = document.getElementById("portfolio-positions-table");
-          tbody.innerHTML = "";
-
+          this.activeUser.cash = totals.cash;
           this.userPositionsCache = {};
 
-          if (Object.keys(data.positions || {}).length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim); font-family:var(--font-mono);">No active open capital formations on desk record.</td></tr>`;
-            return;
+          // Portfolio metrics baseline references (Rendered via Global Standard Pool metrics)
+          document.getElementById("p-kpi-total").textContent = "$" + totals.netValue.toFixed(2);
+          document.getElementById("p-kpi-cash").textContent = "$" + totals.cash.toFixed(2);
+          document.getElementById("p-kpi-invested").textContent = "$" + totals.invested.toFixed(2);
+          
+          const yieldEl = document.getElementById("p-kpi-return");
+          yieldEl.textContent = (totals.returns >= 0 ? "+" : "") + totals.returns.toFixed(2) + "%";
+          yieldEl.className = "kpi-val " + (totals.returns >= 0 ? "gain" : "loss");
+
+          // GRID BINDER FRAMEWORK
+          const positionsBody = document.getElementById("portfolio-positions-table");
+          positionsBody.innerHTML = "";
+          
+          if(!totals.positions || totals.positions.length === 0) {
+            positionsBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-dim); padding:3.5rem 0; font-family:var(--font-mono);">No asset committals registered in active sectors. Initialize execution targets inside Trade Station.</td></tr>`;
+          } else {
+            totals.positions.forEach(pos => {
+              this.userPositionsCache[pos.rawToken] = pos.shares;
+              
+              // Dynamic Currency Identifier checks based on live currency metrics
+              const currencySymbol = pos.currency === "INR" ? "₹" : "$";
+              
+              const row = document.createElement("tr");
+              row.className = "clickable-stock-row";
+              row.dataset.lookupQuery = pos.rawToken; 
+              row.innerHTML = `
+                <td><span class="sym-badge">${pos.symbol}</span></td>
+                <td>${pos.shares.toFixed(4)}</td>
+                <td>${currencySymbol}${pos.avgCost.toFixed(2)}</td>
+                <td>${currencySymbol}${pos.currentPrice.toFixed(2)}</td>
+                <td>${currencySymbol}${pos.marketValue.toFixed(2)}</td>
+                <td class="${pos.gainLoss >= 0 ? 'gain' : 'loss'}">${pos.gainLoss >= 0 ? '+' : ''}${currencySymbol}${pos.gainLoss.toFixed(2)}</td>
+              `;
+              row.addEventListener("click", () => {
+                this.loadAssetFromDirectRowClick(row.dataset.lookupQuery);
+              });
+              positionsBody.appendChild(row);
+            });
           }
 
-          data.positions.forEach(pos => {
-            this.userPositionsCache[pos.rawToken] = pos.shares;
-            
-            const tr = document.createElement("tr");
-            tr.className = "clickable-stock-row";
-            tr.addEventListener("click", () => {
-              this.switchWorkspacePanel("view-trade");
-              document.getElementById("trade-search-input").value = pos.rawToken;
-              this.lookupAssetQueryBlock();
+          // AUDIT ACCOUNT DISPATCH ARCHIVES BINDER
+          const logsBody = document.getElementById("history-logs-table");
+          logsBody.innerHTML = "";
+          
+          if(!totals.history || totals.history.length === 0) {
+            logsBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-dim); padding:3.5rem 0; font-family:var(--font-mono);">Permanent audit ledger sequence empty.</td></tr>`;
+          } else {
+            totals.history.forEach(log => {
+              const historicalSymbol = log.currency === "INR" ? "₹" : "$";
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${log.date}</td>
+                <td style="font-weight:700;" class="${log.type === 'BUY' ? 'gain' : 'loss'}">${log.type}</td>
+                <td><span class="sym-badge">${log.cleanSymbol}</span></td>
+                <td>${log.shares.toFixed(4)}</td>
+                <td>${historicalSymbol}${log.price.toFixed(2)}</td>
+                <td>${historicalSymbol}${log.sum.toFixed(2)}</td>
+                <td class="gain">${log.type === 'SELL' ? historicalSymbol + '0.00' : '0.00'}</td>
+              `;
+              logsBody.appendChild(row);
             });
-
-            const costStr = this.formatCurrencyContext(pos.avgCost, pos.currency);
-            const valStr = this.formatCurrencyContext(pos.currentPrice, pos.currency);
-            const netStr = this.formatCurrencyContext(pos.marketValue, pos.currency);
-            const glStr = this.formatCurrencyContext(pos.gl, pos.currency);
-            
-            tr.innerHTML = `
-              <td><span class="sym-badge">${pos.symbol}</span></td>
-              <td>${pos.shares.toFixed(4)} Units</td>
-              <td>${costStr}</td>
-              <td>${valStr}</td>
-              <td style="font-weight:700;">${netStr}</td>
-              <td class="${pos.gl >= 0 ? 'gain' : 'loss'}">${pos.gl >= 0 ? '+' : ''}${glStr} (${pos.glPct.toFixed(2)}%)</td>
-            `;
-            tbody.appendChild(tr);
-          });
-        } catch (err) {
-          console.error("Valuation ledger synchronization exception error.", err);
+          }
+        } catch(err) {
+          console.error("Critical structural tracking ledger failed to bind.", err);
         }
       },
 
-      async lookupAssetQueryBlock() {
-        const queryVal = document.getElementById("trade-search-input").value.trim();
-        const errBox = document.getElementById("trade-search-error");
+      loadAssetFromDirectRowClick(rawToken) {
+        this.switchWorkspaceView("view-trade");
+        document.getElementById("trade-search-input").value = rawToken;
+        this.executeTickerQuery();
+      },
+
+      syncTradeView() {
+        document.getElementById("trade-cash-badge").textContent = "Available Portfolio Cash: $" + this.activeUser.cash.toFixed(2);
+        document.getElementById("trade-qty-input").value = "";
+        if(!this.tradeAsset) {
+          document.getElementById("trade-search-input").value = "";
+          document.getElementById("trade-ticker-panel").classList.add("hidden");
+        }
+        document.getElementById("trade-search-error").classList.add("hidden");
+        this.runTradeCalculationPreview();
+      },
+
+      /**
+       * Core Linguistic Processing Router Engine Module.
+       */
+      async executeTickerQuery() {
+        const errorContainer = document.getElementById("trade-search-error");
+        errorContainer.classList.add("hidden");
         
-        if (!queryVal) return;
-        errBox.classList.add("hidden");
-        document.getElementById("trade-ticker-panel").classList.add("hidden");
+        const rawQueryString = document.getElementById("trade-search-input").value.trim();
+        if (!rawQueryString) return;
+
+        const lookupButton = document.getElementById("btn-fetch-ticker");
+        lookupButton.disabled = true;
+        lookupButton.textContent = "PARSING CONNECTORS...";
 
         try {
-          const resp = await fetch(`/api/market/query?query=${encodeURIComponent(queryVal)}`);
-          const data = await resp.json();
-
-          if (!resp.ok) {
-            errBox.textContent = data.error || "Linguistic parser query matching failure.";
-            errBox.classList.remove("hidden");
+          const res = await fetch(`/api/market/query?query=${encodeURIComponent(rawQueryString)}`);
+          const data = await res.json();
+          
+          if (!res.ok) {
+            errorContainer.textContent = data.error || "Data allocation parse error.";
+            errorContainer.classList.remove("hidden");
+            lookupButton.disabled = false;
+            lookupButton.textContent = "QUERY LOOKUP";
             return;
           }
 
-          // Anchor the core asset object variables
           this.tradeAsset = data;
           
-          // Format ticker header layout presentation wrappers
-          document.getElementById("t-display-symbol").textContent = data.symbol;
-          document.getElementById("t-display-name").textContent = data.cleanName;
-          
-          // Display configured prices utilizing currency switches
-          document.getElementById("t-display-price").textContent = data.displayPrice;
-          
-          const chgNode = document.getElementById("t-display-change");
-          const changeSymbol = data.change >= 0 ? "▲" : "▼";
-          chgNode.textContent = `${changeSymbol} ${this.formatCurrencyContext(Math.abs(data.change), data.currency)} (${data.pct >= 0 ? '+' : ''}${data.pct.toFixed(2)}%)`;
-          chgNode.className = data.change >= 0 ? "gain" : "loss";
+          // Inject dynamic programmatic identifiers to layout layers based on true asset structure
+          const assetCurrencySymbol = data.currency === "INR" ? "₹" : "$";
 
-          // Unhide active interactive dashboard components
           document.getElementById("trade-ticker-panel").classList.remove("hidden");
+          document.getElementById("t-display-symbol").textContent = data.cleanName; 
+          document.getElementById("t-display-name").textContent = data.assetClassDescription;
+          document.getElementById("t-display-price").textContent = assetCurrencySymbol + data.price.toFixed(2);
           
-          // Refresh components dependent on asset profile maps
-          this.tradeMode = "buy";
-          document.getElementById("toggle-buy").classList.add("active");
-          document.getElementById("toggle-sell").classList.remove("active");
-          document.getElementById("trade-qty-input").value = "";
-          
-          this.updateSliderRangeContext();
+          const changeContainer = document.getElementById("t-display-change");
+          changeContainer.textContent = (data.change >= 0 ? "+" : "") + data.change.toFixed(2) + " (" + (data.pct >= 0 ? "+" : "") + data.pct.toFixed(2) + "%)";
+          changeContainer.className = data.change >= 0 ? "gain" : "loss";
+
+          document.getElementById("t-stat-price").textContent = assetCurrencySymbol + data.price.toFixed(2);
+          document.getElementById("t-stat-high").textContent = assetCurrencySymbol + data.high.toFixed(2);
+          document.getElementById("t-stat-low").textContent = assetCurrencySymbol + data.low.toFixed(2);
+          document.getElementById("t-stat-rawtoken").textContent = data.symbol;
+
+          this.syncAllocationPercentageSliderContext();
+          this.renderVisualsChartModule();
           this.runTradeCalculationPreview();
-          this.buildNativeAssetCandleChart(data.symbol, data.provider);
-        } catch (err) {
-          errBox.textContent = "Critical communication network gateway timed out.";
-          errBox.classList.remove("hidden");
+
+        } catch(e) {
+          errorContainer.textContent = "System node communications interface error.";
+          errorContainer.classList.remove("hidden");
+        } finally {
+          lookupButton.disabled = false;
+          lookupButton.textContent = "QUERY LOOKUP";
         }
       },
 
-      updateSliderRangeContext() {
-        if (!this.tradeAsset) return;
-        const totalOwned = this.userPositionsCache[this.tradeAsset.symbol] || 0;
-        document.getElementById("trade-qty-slider").value = 0;
-        document.getElementById("slider-max-display").textContent = `0% (Owned: ${totalOwned.toFixed(2)})`;
+      syncAllocationPercentageSliderContext() {
+        if(!this.tradeAsset) return;
+        const ownedShares = this.userPositionsCache[this.tradeAsset.symbol] || 0;
+        const rangeSlider = document.getElementById("trade-qty-slider");
+        const rangeDisplay = document.getElementById("slider-max-display");
+        
+        rangeSlider.value = 0;
+        rangeDisplay.textContent = `0% (Owned Units: ${ownedShares.toFixed(4)})`;
+      },
+
+      /**
+       * Multi-Architecture Dynamic Visualization Chart Engine Module Router.
+       */
+      renderVisualsChartModule() {
+        const tvWrapperContainer = document.getElementById("tradingview-chart-container");
+        const nativeWrapperContainer = document.getElementById("native-chart-wrapper");
+        
+        // DESTINATION CONFIGURATION DETERMINATION FRAMEWORK
+        if (this.tradeAsset.provider === "finnhub") {
+          // ROUTE PATH A: Standard Integrated Frame Router (For US Asset Vectors)
+          tvWrapperContainer.style.display = "block";
+          nativeWrapperContainer.classList.add("hidden");
+          this.teardownNativeChartArchitecture();
+          this.injectStandardTradingViewWidgetIframe(this.tradeAsset.symbol);
+        } else {
+          // ROUTE PATH B: High Density Lightweight Core Router (For Indian Native Vectors)
+          tvWrapperContainer.style.display = "none";
+          nativeWrapperContainer.classList.remove("hidden");
+          this.initializeHighPerformanceNativeCanvasChart();
+          this.fetchNativeProxyChartStream();
+        }
+      },
+
+      injectStandardTradingViewWidgetIframe(tickerSymbol) {
+        let cleanTradingViewTickerString = tickerSymbol.toUpperCase();
+        
+        // Apply routing index adjustments
+        if(cleanTradingViewTickerString === "^IXIC") cleanTradingViewTickerString = "NASDAQ:IXIC";
+        else if(cleanTradingViewTickerString === "^NSEI") cleanTradingViewTickerString = "NSE:NIFTY";
+        else if(cleanTradingViewTickerString === "^BSESN") cleanTradingViewTickerString = "BSE:SENSEX";
+        else if(cleanTradingViewTickerString.endsWith(".NS")) {
+          cleanTradingViewTickerString = "NSE:" + cleanTradingViewTickerString.replace(".NS", "");
+        } else if(cleanTradingViewTickerString.endsWith(".BO")) {
+          cleanTradingViewTickerString = "BSE:" + cleanTradingViewTickerString.replace(".BO", "");
+        }
+
+        const activeWorkspaceTheme = document.body.getAttribute("data-theme") || "dark";
+
+        new TradingView.widget({
+          "width": "100%",
+          "height": "100%",
+          "symbol": cleanTradingViewTickerString,
+          "interval": "D",
+          "timezone": "Asia/Kolkata",
+          "theme": activeWorkspaceTheme,
+          "style": "1",
+          "locale": "en",
+          "toolbar_bg": activeWorkspaceTheme === "dark" ? "#0d121a" : "#ffffff",
+          "enable_publishing": false,
+          "hide_side_toolbar": true,
+          "allow_symbol_change": false,
+          "container_id": "tradingview-chart-container"
+        });
+      },
+
+      /**
+       * High-Density Local Light Weight Canvas Core Controllers.
+       */
+      initializeHighPerformanceNativeCanvasChart() {
+        this.teardownNativeChartArchitecture();
+
+        const candleBox = document.getElementById("chart-canvas-container");
+        const volumeBox = document.getElementById("vol-canvas-container");
+        candleBox.innerHTML = ""; volumeBox.innerHTML = "";
+
+        // CONFIG BASE MODIFIERS
+        this.nativeChartInstance = LightweightCharts.createChart(candleBox, {
+          width: candleBox.offsetWidth,
+          height: 380,
+          layout: { background: { color: '#0d1117' }, textColor: '#8b949e' },
+          grid: { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
+          crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+          rightPriceScale: { borderColor: '#30363d' },
+          timeScale: { borderColor: '#30363d', timeVisible: true, secondsVisible: false }
+        });
+
+        this.nativeVolChartInstance = LightweightCharts.createChart(volumeBox, {
+          width: volumeBox.offsetWidth,
+          height: 95,
+          layout: { background: { color: '#0d1117' }, textColor: '#8b949e' },
+          grid: { vertLines: { color: '#21262d' }, horzLines: { color: '#21262d' } },
+          rightPriceScale: { borderColor: '#30363d', visible: false },
+          timeScale: { visible: false }
+        });
+
+        // GENERATE DATA CHANNEL SERIES OBJECTS
+        this.nativeMainCandleSeries = this.nativeChartInstance.addCandlestickSeries({
+          upColor: '#2ea043', downColor: '#f85149', borderColor: '#2ea043',
+          wickUpColor: '#2ea043', wickDownColor: '#f85149', borderDownColor: '#f85149'
+        });
+
+        this.nativeVolumeSeries = this.nativeVolChartInstance.addHistogramSeries({
+          priceFormat: { type: 'volume' },
+          priceScaleId: ''
+        });
+
+        // Establish linked interaction loops across dual stacked graphs
+        this.nativeChartInstance.timeScale().subscribeVisibleTimeRangeChange(range => {
+          this.nativeVolChartInstance.timeScale().setVisibleRange(range);
+        });
+        this.nativeVolChartInstance.timeScale().subscribeVisibleTimeRangeChange(range => {
+          this.nativeChartInstance.timeScale().setVisibleRange(range);
+        });
+      },
+
+      async fetchNativeProxyChartStream() {
+        const querySymbolToken = this.tradeAsset.symbol;
+        // Bypassing client side CORS blocking vectors using the secure corsproxy mapping layout
+        const targetUrl = `https://corsproxy.io/?${encodeURIComponent('https://query1.finance.yahoo.com/v8/finance/chart/' + querySymbolToken + '?interval=' + this.nativeIntervalSetting + '&range=' + this.nativeRangeSetting)}`;
+        
+        try {
+          const response = await fetch(targetUrl);
+          const rootDataPayload = await response.json();
+          const targetNodeResult = rootDataPayload.chart.result[0];
+          
+          const timeTicks = targetNodeResult.timestamp;
+          const matrixQuotes = targetNodeResult.indicators.quote[0];
+          
+          this.nativeChartRawDataset = [];
+          
+          // Rebuild standardized timeline structures from raw proxy streams
+          for(let i = 0; i < timeTicks.length; i++) {
+            if(matrixQuotes.close[i] == null || matrixQuotes.open[i] == null) continue;
+            
+            this.nativeChartRawDataset.push({
+              time: timeTicks[i],
+              open: parseFloat(matrixQuotes.open[i]),
+              high: parseFloat(matrixQuotes.high[i]),
+              low: parseFloat(matrixQuotes.low[i]),
+              close: parseFloat(matrixQuotes.close[i]),
+              volume: matrixQuotes.volume[i] ? parseFloat(matrixQuotes.volume[i]) : 0
+            });
+          }
+          
+          this.refreshNativeCanvasChartDisplayLayers();
+
+        } catch(err) {
+          console.error("High density data stream pipeline failed to bind tracking units.", err);
+        }
+      },
+
+      refreshNativeCanvasChartDisplayLayers() {
+        if(!this.nativeMainCandleSeries || this.nativeChartRawDataset.length === 0) return;
+
+        this.nativeMainCandleSeries.setData(this.nativeChartRawDataset);
+        
+        const volumeMappedSeries = this.nativeChartRawDataset.map(item => ({
+          time: item.time,
+          value: item.volume,
+          color: item.close >= item.open ? 'rgba(46, 160, 67, 0.25)' : 'rgba(248, 81, 73, 0.25)'
+        }));
+        this.nativeVolumeSeries.setData(volumeMappedSeries);
+
+        this.nativeChartInstance.timeScale().fitContent();
+        this.nativeVolChartInstance.timeScale().fitContent();
+
+        // Restore dynamic tracking components across updates
+        this.nativeActiveMAIndicators.forEach(period => this.generateNativeMAComputationLine(period));
+      },
+
+      setNativeRange(rangeVal, intervalVal, btnId) {
+        this.nativeRangeSetting = rangeVal;
+        this.nativeIntervalSetting = intervalVal;
+        
+        document.querySelectorAll(".native-ctrl-row button").forEach(b => {
+          if(b.id.startsWith("range-btn")) b.classList.remove("active");
+        });
+        document.getElementById(btnId).classList.add("active");
+        
+        this.fetchNativeProxyChartStream();
+      },
+
+      toggleNativeMA(period, btnId) {
+        const button = document.getElementById(btnId);
+        if(this.nativeActiveMAIndicators.has(period)) {
+          this.nativeActiveMAIndicators.delete(period);
+          button.classList.remove("active");
+          if(this.nativeMASeriesMap[period]) {
+            this.nativeChartInstance.removeSeries(this.nativeMASeriesMap[period]);
+            delete this.nativeMASeriesMap[period];
+          }
+        } else {
+          this.nativeActiveMAIndicators.add(period);
+          button.classList.add("active");
+          this.generateNativeMAComputationLine(period);
+        }
+      },
+
+      generateNativeMAComputationLine(period) {
+        if(!this.nativeChartInstance || this.nativeChartRawDataset.length < period) return;
+        
+        // Remove existing mathematical configurations if duplicated
+        if(this.nativeMASeriesMap[period]) {
+          this.nativeChartInstance.removeSeries(this.nativeMASeriesMap[period]);
+        }
+
+        const lineTrackColor = period === 20 ? '#db6d28' : '#b388ff';
+        const lineSeriesPointer = this.nativeChartInstance.addLineSeries({
+          color: lineTrackColor,
+          lineWidth: 1.5,
+          title: `EMA ${period}`
+        });
+
+        const computedMAData = [];
+        for (let i = period - 1; i < this.nativeChartRawDataset.length; i++) {
+          const calculationSlice = this.nativeChartRawDataset.slice(i - period + 1, i + 1);
+          const aggregationSum = calculationSlice.reduce((accumulator, node) => accumulator + node.close, 0);
+          computedMAData.push({
+            time: this.nativeChartRawDataset[i].time,
+            value: aggregationSum / period
+          });
+        }
+
+        lineSeriesPointer.setData(computedMAData);
+        this.nativeMASeriesMap[period] = lineSeriesPointer;
+      },
+
+      teardownNativeChartArchitecture() {
+        if(this.nativeChartInstance) { this.nativeChartInstance.remove(); this.nativeChartInstance = null; }
+        if(this.nativeVolChartInstance) { this.nativeVolChartInstance.remove(); this.nativeVolChartInstance = null; }
+        this.nativeMainCandleSeries = null;
+        this.nativeVolumeSeries = null;
+        this.nativeMASeriesMap = {};
+      },
+
+      /**
+       * Dynamically Updated Capital Real-time Computational Systems.
+       */
+      updateTradeModeConfiguration(mode, domElement) {
+        this.tradeMode = mode;
+        document.getElementById("toggle-buy").classList.toggle("active", mode === "buy");
+        document.getElementById("toggle-sell").classList.toggle("active", mode === "sell");
+        
+        const sliderWrapper = document.getElementById("sell-slider-wrapper");
+        const operationalLabel = document.getElementById("calc-preview-label");
+        
+        if(mode === "buy") {
+          sliderWrapper.classList.add("hidden");
+          operationalLabel.textContent = "Estimated Allocation Debit";
+        } else {
+          sliderWrapper.classList.remove("hidden");
+          operationalLabel.textContent = "Estimated Liquidation Credit";
+          this.syncAllocationPercentageSliderContext();
+        }
+        this.runTradeCalculationPreview();
+      },
+
+      processSellPercentageSliderAdjustment(percentage) {
+        if(!this.tradeAsset) return;
+        const totalOwnedSharesInInventory = this.userPositionsCache[this.tradeAsset.symbol] || 0;
+        const mathematicallyDerivedUnits = (parseInt(percentage) / 100) * totalOwnedSharesInInventory;
+        
+        document.getElementById("trade-qty-input").value = mathematicallyDerivedUnits > 0 ? mathematicallyDerivedUnits.toFixed(4) : "";
+        document.getElementById("slider-max-display").textContent = `${percentage}% (Owned Units: ${totalOwnedSharesInInventory.toFixed(4)})`;
+        this.runTradeCalculationPreview();
       },
 
       runTradeCalculationPreview() {
-        if (!this.tradeAsset) return;
-        const qty = parseFloat(document.getElementById("trade-qty-input").value) || 0;
-        const price = this.tradeAsset.price;
-        const currency = this.tradeAsset.currency;
-
-        const totalPrincipal = qty * price;
-        
-        document.getElementById("preview-est-principal").textContent = this.formatCurrencyContext(totalPrincipal, currency);
-        
-        const previewTotalNode = document.getElementById("preview-est-total");
-        previewTotalNode.textContent = this.formatCurrencyContext(totalPrincipal, currency);
-        previewTotalNode.className = this.tradeMode === "buy" ? "gain" : "loss";
-      },
-
-      async dispatchOrderBlock() {
-        const errorWidget = document.getElementById("trade-dispatch-error");
-        errorWidget.classList.add("hidden");
-
-        if (!this.tradeAsset) return;
-        const qty = parseFloat(document.getElementById("trade-qty-input").value) || 0;
-
-        if (qty <= 0) {
-          errorWidget.textContent = "Allocation sizing bounds constraint requires quantity greater than zero.";
-          errorWidget.classList.remove("hidden");
+        if(!this.tradeAsset) {
+          document.getElementById("prev-cost").textContent = "$0.00";
+          document.getElementById("prev-residual").textContent = "$" + (this.activeUser ? this.activeUser.cash.toFixed(2) : "0.00");
           return;
         }
 
-        const endpoint = `/api/trade/${this.tradeMode}`;
-        const payload = {
-          symbol: this.tradeAsset.symbol,
-          qty: qty,
-          price: this.tradeAsset.price,
-          provider: this.tradeAsset.provider
-        };
+        const totalInputVolumeUnits = parseFloat(document.getElementById("trade-qty-input").value) || 0;
+        
+        // Execute dynamic math inside base currency constraints before printing
+        const localizedCapitalCostSum = totalInputVolumeUnits * this.tradeAsset.price;
+        
+        // Convert localized costs back to global base tracking pools ($ USD) to update residual liquidity cards
+        let universalBaseDebitConversionCost = localizedCapitalCostSum;
+        if(this.tradeAsset.currency === "INR") {
+          // Approximate conversion metrics for dynamic estimation checks ($1 = ₹84.00 base standard)
+          universalBaseDebitConversionCost = localizedCapitalCostSum / 84.00;
+        }
+
+        const projectedLeftoverReserveBalance = this.tradeMode === "buy" 
+          ? this.activeUser.cash - universalBaseDebitConversionCost 
+          : this.activeUser.cash + universalBaseDebitConversionCost;
+
+        const assetCurrencyPrefixSymbol = this.tradeAsset.currency === "INR" ? "₹" : "$";
+        document.getElementById("prev-cost").textContent = assetCurrencyPrefixSymbol + localizedCapitalCostSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        const balanceDisplayElement = document.getElementById("prev-residual");
+        balanceDisplayElement.textContent = "$" + projectedLeftoverReserveBalance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        balanceDisplayElement.className = projectedLeftoverReserveBalance < 0 ? "loss" : "";
+      },
+
+      /**
+       * Backend API Order Execution Dispatchers.
+       */
+      async dispatchOrderBlockToBackend() {
+        if (!this.tradeAsset) return;
+        
+        const dispatchUnitsVolumeInput = parseFloat(document.getElementById("trade-qty-input").value) || 0;
+        if(dispatchUnitsVolumeInput <= 0) {
+          alert("Specify a valid volume payload load to execute operations.");
+          return;
+        }
+
+        const targetActionButton = document.getElementById("btn-dispatch-order");
+        targetActionButton.disabled = true;
+        targetActionButton.textContent = "DISPATCHING NODE TRANSACTION BLOCK...";
 
         try {
-          const resp = await fetch(endpoint, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+          const res = await fetch('/api/trade/execute', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              symbol: this.tradeAsset.symbol,
+              qty: dispatchUnitsVolumeInput,
+              mode: this.tradeMode,
+              price: this.tradeAsset.price
+            })
           });
-          const data = await resp.json();
-
-          if (!resp.ok) {
-            errorWidget.textContent = data.error || "Order dispatch configuration execution halted.";
-            errorWidget.classList.remove("hidden");
-            return;
+          
+          const data = await res.json();
+          if(!res.ok) {
+            alert("Order compilation failed: " + (data.error || "Execution parameters mismatch."));
+          } else {
+            alert("Desk transaction confirmation finalized successfully!");
+            this.tradeAsset = null;
+            this.teardownNativeChartArchitecture();
+            await this.switchWorkspaceView("view-portfolio");
           }
-
-          // Flash success alerts, bounce back to main monitoring panels view grid
-          alert(`Execution Success! Order completely routed onto simulation exchange matching nodes.`);
-          document.getElementById("trade-search-input").value = "";
-          document.getElementById("trade-ticker-panel").classList.add("hidden");
-          this.switchWorkspacePanel("view-portfolio");
-        } catch (err) {
-          errorWidget.textContent = "Simulated clearing broker uplink connection timed out.";
-          errorWidget.classList.remove("hidden");
+        } catch(e) {
+          alert("Network execution failure. Terminal order revoked.");
+        } finally {
+          targetActionButton.disabled = false;
+          targetActionButton.textContent = "DISPATCH TRANSACTION TO DESK";
         }
       },
 
-      async loadAuditTransactionLogs() {
+      /**
+       * Leaderboard Dynamic Rankings Matrix Sync System.
+       */
+      async syncLeaderboardView() {
         try {
-          const resp = await fetch("/api/user/portfolio");
-          if (!resp.ok) return;
-          const data = await resp.json();
+          const res = await fetch('/api/leaderboard');
+          const rankingDataset = await res.json();
+          const ranksTableBody = document.getElementById("leaderboard-ranking-table");
+          ranksTableBody.innerHTML = "";
           
-          const tbody = document.getElementById("history-logs-table");
-          tbody.innerHTML = "";
-
-          if (!data.history || data.history.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-dim); font-family:var(--font-mono);">No audited clearance events captured inside active sector nodes.</td></tr>`;
-            return;
-          }
-
-          data.history.forEach(log => {
+          rankingDataset.forEach((trader, idx) => {
             const tr = document.createElement("tr");
-            const priceStr = this.formatCurrencyContext(log.price, log.currency);
-            const sumStr = this.formatCurrencyContext(log.sum, log.currency);
-            
-            let plStr = "--";
-            let plClass = "";
-            if (log.pl !== undefined && log.pl !== 0) {
-              plStr = this.formatCurrencyContext(log.pl, log.currency);
-              plClass = log.pl >= 0 ? "gain" : "loss";
-            }
-
             tr.innerHTML = `
-              <td style="color:var(--text-secondary); font-size:0.8rem;">${log.time}</td>
-              <td><span class="sym-badge">${log.cleanSymbol || log.symbol}</span></td>
-              <td style="font-weight:700;" class="${log.action === 'buy' ? 'gain' : 'loss'}">${log.action.toUpperCase()}</td>
-              <td>${log.shares.toFixed(4)}</td>
-              <td>${priceStr}</td>
-              <td style="font-weight:700;">${sumStr}</td>
-              <td class="${plClass}">${log.pl ? (log.pl >= 0 ? '+' : '') + plStr : '--'}</td>
+              <td><strong>#${idx + 1}</strong></td>
+              <td style="font-weight:500;">${trader.name} <span style="color:var(--text-dim); font-size:0.78rem; font-family:var(--font-mono); font-weight:400; margin-left:5px;">@${trader.handle}</span></td>
+              <td>$${trader.cash.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+              <td style="font-weight:700;" class="${trader.returns >= 0 ? 'gain' : 'loss'}">${trader.returns >= 0 ? '+' : ''}${trader.returns.toFixed(2)}%</td>
             `;
-            tbody.appendChild(tr);
+            ranksTableBody.appendChild(tr);
           });
-        } catch (e) {
-          console.error("Auditing retrieval trace error.", e);
-        }
-      },
-
-      async loadGlobalLeaderboardMatrix() {
-        try {
-          const resp = await fetch("/api/leaderboard");
-          if (!resp.ok) return;
-          const board = await resp.json();
-          
-          const tbody = document.getElementById("leaderboard-ranks-table");
-          tbody.innerHTML = "";
-
-          board.forEach((user, idx) => {
-            const tr = document.createElement("tr");
-            if (user.handle === document.getElementById("sb-user-handle").textContent.replace('@','')) {
-              tr.style.background = "rgba(0, 255, 136, 0.04)";
-              tr.style.borderLeft = "3px solid var(--accent)";
-            }
-
-            // Global simulation rules map leaderboard base metrics strictly via USD reference valuation pegs
-            tr.innerHTML = `
-              <td style="font-weight:bold; color:var(--accent);"># ${(idx + 1).toString().padStart(2, '0')}</td>
-              <td>
-                <div style="font-weight:700;">${user.name}</div>
-                <div style="font-size:0.75rem; color:var(--text-secondary);">@${user.handle}</div>
-              </td>
-              <td style="font-weight:700;">$ ${user.net_worth.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-              <td class="${user.returns_pct >= 0 ? 'gain' : 'loss'}">${user.returns_pct >= 0 ? '+' : ''}${user.returns_pct.toFixed(2)} %</td>
-              <td>${user.trades_count} Commits</td>
-            `;
-            tbody.appendChild(tr);
-          });
-        } catch (err) {
+        } catch(err) {
           console.error("Leaderboard interface retrieval failed.", err);
         }
       },
 
+      /**
+       * Scrolling Live Broadcast Tape Engine Module.
+       */
       runTickerTapeBroadcast() {
         const container = document.getElementById("app-ticker-tape-container");
         if (!container) return;
@@ -1227,94 +1439,14 @@
         unifiedBroadcastTrack.forEach(item => {
           const tickerBlock = document.createElement("div");
           tickerBlock.className = "tt-item";
-          tickerBlock.innerHTML = `<span class=\"tt-sym\">${item.t}</span> <span class=\"tt-price\">${item.s}</span> <span>[NODE STEADY]</span>`;
+          tickerBlock.innerHTML = `<span class="tt-sym">${item.t}</span> <span class="tt-price">${item.s}</span> <span>[NODE STEADY]</span>`;
           container.appendChild(tickerBlock);
         });
-      },
-
-      /**
-       * Simple Janky HTML5 Canvas Charts Realization (No External Lightweight Charts Failures)
-       */
-      buildNativeAssetCandleChart(symbol, provider) {
-        document.getElementById("native-chart-ticker-meta").textContent = `ENGINE FEED: MOCKING CONSTRUCT ${symbol}`;
-        
-        const cCandles = document.getElementById("canvas-candles");
-        const cVolume = document.getElementById("canvas-volume");
-        if (!cCandles || !cVolume) return;
-        
-        const ctxC = cCandles.getContext("2d");
-        const ctxV = cVolume.getContext("2d");
-        
-        // Dynamic viewport container sizing matches
-        const w = cCandles.parentElement.clientWidth;
-        const hC = cCandles.parentElement.clientHeight;
-        const hV = cVolume.parentElement.clientHeight;
-        
-        cCandles.width = w; cCandles.height = hC;
-        cVolume.width = w;  cVolume.height = hV;
-
-        // Clean slate context grids
-        ctxC.fillStyle = "#0d1117"; ctxC.fillRect(0, 0, w, hC);
-        ctxV.fillStyle = "#0d1117"; ctxV.fillRect(0, 0, w, hV);
-
-        // Inject simulated financial historical structural matrix bars
-        const pointsCount = 45;
-        const candleSpacing = w / pointsCount;
-        let baselinePrice = this.tradeAsset ? this.tradeAsset.price : 150;
-
-        ctxC.strokeStyle = "rgba(255,255,255,0.04)";
-        ctxC.lineWidth = 1;
-        for (let i = 0; i < w; i += 40) {
-          ctxC.beginPath(); ctxC.moveTo(i, 0); ctxC.lineTo(i, hC); ctxC.stroke();
-        }
-        for (let j = 0; j < hC; j += 30) {
-          ctxC.beginPath(); ctxC.moveTo(0, j); ctxC.lineTo(w, j); ctxC.stroke();
-        }
-
-        // Iterate through rendering loop calculations
-        for (let i = 0; i < pointsCount; i++) {
-          const factor = (i / pointsCount);
-          const open = baselinePrice * (0.97 + Math.random() * 0.06);
-          const close = baselinePrice * (0.97 + Math.random() * 0.06);
-          const high = Math.max(open, close) * (1.002 + Math.random() * 0.015);
-          const low = Math.min(open, close) * (0.985 - Math.random() * 0.015);
-          
-          const x = i * candleSpacing + (candleSpacing * 0.15);
-          const candleW = candleSpacing * 0.7;
-          
-          const maxVal = baselinePrice * 1.15;
-          const minVal = baselinePrice * 0.85;
-          
-          const mapY = (val) => hC - ((val - minVal) / (maxVal - minVal)) * hC;
-          const mapVolY = (val) => hV - (val * hV);
-
-          const isBull = close >= open;
-          const colorThemeHex = isBull ? "#00ff88" : "#ff3860";
-
-          // Draw shadows wicks lines
-          ctxC.strokeStyle = colorThemeHex;
-          ctxC.lineWidth = 1.5;
-          ctxC.beginPath();
-          ctxC.moveTo(x + (candleW / 2), mapY(high));
-          ctxC.lineTo(x + (candleW / 2), mapY(low));
-          ctxC.stroke();
-
-          // Draw real candle bodies rectangles
-          ctxC.fillStyle = colorThemeHex;
-          const bodyY = mapY(Math.max(open, close));
-          const bodyH = Math.max(2, Math.abs(mapY(open) - mapY(close)));
-          ctxC.fillRect(x, bodyY, candleW, bodyH);
-
-          // Render transaction volume levels blocks underneath
-          ctxV.fillStyle = isBull ? "rgba(0, 255, 136, 0.2)" : "rgba(255, 56, 96, 0.2)";
-          const vH = 20 + Math.random() * 65;
-          ctxV.fillRect(x, hV - vH, candleW, vH);
-        }
       }
     };
 
-    // System initialization entry hook
-    window.addEventListener("DOMContentLoaded", () => App.init());
+    // SYSTEM DESK INITIALIZATION BOOT STRAP EVENT TRIGGER
+    document.addEventListener("DOMContentLoaded", () => App.init());
   </script>
 </body>
 </html>
