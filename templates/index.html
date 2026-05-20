@@ -731,13 +731,13 @@
       return sym + val.toLocaleString("en-IN", {minimumFractionDigits:2, maximumFractionDigits:2});
     },
 
-    fmtUSD(usdAmount) {
-      if (this.displayCurrency === "INR") {
-        return "₹" + (usdAmount * this.liveUsdInrRate).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
-      }
-      return "$" + usdAmount.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
-    },
-
+  fmtUSD(usdAmount) {
+  const amt = parseFloat(usdAmount) || 0;
+  if (this.displayCurrency === "INR") {
+    return "₹" + (amt * this.liveUsdInrRate).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  return "$" + amt.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+},
     setCurrencyMode(mode) {
       this.displayCurrency = mode;
       document.getElementById("cur-btn-usd").classList.toggle("active", mode === "USD");
@@ -994,7 +994,8 @@
     },
 
     syncTradeView() {
-      document.getElementById("trade-cash-badge").textContent = "Cash: "+this.fmtUSD(this.activeUser.cash);
+  const cash = this.activeUser?.cash ?? 0;
+  document.getElementById("trade-cash-badge").textContent = "Cash: "+this.fmtUSD(cash);
       document.getElementById("trade-qty-input").value = "";
       if (!this.tradeAsset) {
         document.getElementById("trade-search-input").value = "";
