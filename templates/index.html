@@ -197,7 +197,29 @@
 .mkt-tag.open{background:var(--acg);color:var(--ac);border:1px solid rgba(0,255,136,.15)}
 .mkt-tag.closed{background:var(--red-glow);color:var(--red-bright);border:1px solid rgba(255,56,96,.2)}
 .mkt-tag.pre{background:rgba(251,191,36,.08);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
-    
+    /* sidebar collapse */
+.sidebar{transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.sidebar.sb-off{transform:translateX(calc(-1 * var(--sidebar-w)))}
+.workspace{transition:margin-left .25s cubic-bezier(.4,0,.2,1)}
+.workspace.sb-off{margin-left:0!important}
+
+/* toggle buttons */
+.sb-btn{
+  position:fixed;top:.9rem;z-index:300;
+  background:var(--bg-card);border:1px solid var(--b);
+  border-radius:var(--r-md);color:var(--t2);cursor:pointer;
+  font-size:.85rem;padding:.4rem .6rem;line-height:1;
+  transition:all var(--ease);
+}
+.sb-btn:hover{color:var(--ac);border-color:var(--ac)}
+#sb-open{left:.9rem}
+#sb-close{left:calc(var(--sidebar-w) - 2.6rem)}
+
+@media(max-width:768px){
+  .sb-btn{display:none}
+  .sidebar.sb-off{transform:translateY(-100%)}
+  .workspace.sb-off{margin-left:0!important;margin-top:0}
+}
   </style>
 </head>
 <body data-theme="dark">
@@ -257,6 +279,8 @@
 
 <!-- APP -->
 <div id="s-app" class="app-wrap hidden">
+  <button class="sb-btn hidden" id="sb-open"  onclick="App.toggleSb()">☰</button>
+  <button class="sb-btn"        id="sb-close" onclick="App.toggleSb()">«</button>
   <nav class="sidebar">
     <div class="sb-brand">$STOCK<span>SIM</span></div>
     <div class="sb-sub">Global Paper Trading</div>
@@ -523,29 +547,50 @@ const Popup={
 /* ── APP ───────────────────────────────────────────────────────────────────── */
 const App={
   user:null, asset:null, tradeMode:'buy',
-  posCache:{}, cur:'USD', inrRate:84,
+  posCache:{}, cur:'USD', inrRate:91,
+  _chartCtrl:null,
   chartInst:null, volInst:null, mainSeries:null, volSeries:null,
   maSeries:{}, activeMA:new Set(),
   chartStyle:'candlestick', cRange:'max', cInterval:'1wk', rawData:[],
-
   PROXIES:[
     u=>`https://corsproxy.io/?${encodeURIComponent(u)}`,
     u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
   ],
 
-  async yahooFetch(symbol,interval,range){
+  toggleSb(){
+    const sb=document.querySelector('.sidebar');
+    const ws=document.querySelector('.workspace');
+    const off=sb.classList.toggle('sb-off');
+    ws.classList.toggle('sb-off',off);
+    document.getElementById('sb-open').classList.toggle('hidden',!off);
+    document.getElementById('sb-close').classList.toggle('hidden',off);
+    try{localStorage.setItem('sb-state',off?'closed':'open');}catch(e){}
+  },
+  initSb(){
+    try{if(localStorage.getItem('sb-state')==='closed')this.toggleSb();}catch(e){}
+  },
+
+  // ── rest of your App object continues below ──
+  async yahooFetch(symbol, interval, range, extSig=null){
+
+async yahooFetch(symbol, interval, range, extSig=null){
     const base=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=${interval}&range=${range}&includePrePost=false`;
     for(let i=0;i<this.PROXIES.length;i++){
-      try{
-        const ctrl=new AbortController();
-        const tid=setTimeout(()=>ctrl.abort(),9000);
-        const res=await fetch(this.PROXIES[i](base),{signal:ctrl.signal});
-        clearTimeout(tid);
-        if(!res.ok) continue;
-        return await res.json();
-      }catch(e){if(i===this.PROXIES.length-1)throw e;}
+        if(extSig?.aborted) throw new DOMException('Aborted','AbortError');
+        try{
+            const ctrl=new AbortController();
+            const tid=setTimeout(()=>ctrl.abort(),13000);
+            if(extSig) extSig.addEventListener('abort',()=>{clearTimeout(tid);ctrl.abort()},{once:true});
+            const res=await fetch(this.PROXIES[i](base),{signal:ctrl.signal});
+            clearTimeout(tid);
+            if(!res.ok) continue;
+            return await res.json();
+        }catch(e){
+            if(e.name==='AbortError'&&extSig?.aborted) throw e;
+            if(i===this.PROXIES.length-1) throw e;
+        }
     }
-  },
+},
 
   looksIndian(q){
     const u=q.trim().toUpperCase();
@@ -642,6 +687,7 @@ const App={
 setInterval(() => this.updateMarketBar(), 60000);
     // fetch live INR rate on load
     fetch('/api/fx/inr').then(r=>r.json()).then(d=>{if(d.usdInrRate)this.inrRate=d.usdInrRate;this.updateFxStrip();}).catch(()=>{});
+    this.initSb();
   },
 
   // ── Auth ──────────────────────────────────────────────────────────────────
@@ -1043,20 +1089,38 @@ async searchTicker(){
     }
     line.setData(data); this.maSeries[period]=line;
   },
- async fetchChart(){
+async fetchChart(){
     if(!this.asset) return;
-    const loadEl=document.getElementById('cload'); if(loadEl) loadEl.style.display='flex';
+    if(this._chartCtrl) this._chartCtrl.abort();   // cancel previous range fetch
+    this._chartCtrl=new AbortController();
+    const sig=this._chartCtrl.signal;
+
+    const loadEl=document.getElementById('cload');
+    if(loadEl) loadEl.style.display='flex';
     const isIndian=this.asset.currency==='INR'||this.looksIndian(this.asset.symbol);
+
     try{
         let json;
         if(isIndian){
-            json=await this.yahooFetch(this.asset.symbol, this.cInterval, this.cRange);
+            try{
+                json=await this.yahooFetch(this.asset.symbol,this.cInterval,this.cRange,sig);
+            }catch(e){
+                if(sig.aborted) return;   // user clicked a different range — silently drop
+                // CORS proxy failed — fall back to our own backend proxy
+                const r=await fetch(`/api/chart/yahoo?symbol=${encodeURIComponent(this.asset.symbol)}&interval=${this.cInterval}&period=${this.cRange}`,{signal:sig});
+                json=await r.json();
+            }
         } else {
-            const r=await fetch(`/api/chart/yahoo?symbol=${encodeURIComponent(this.asset.symbol)}&interval=${this.cInterval}&period=${this.cRange}`);
+            const r=await fetch(`/api/chart/yahoo?symbol=${encodeURIComponent(this.asset.symbol)}&interval=${this.cInterval}&period=${this.cRange}`,{signal:sig});
             json=await r.json();
         }
+        if(sig.aborted) return;
+
         const result=json?.chart?.result?.[0];
-        if(!result||!result.timestamp?.length){ if(loadEl) loadEl.innerHTML='<span style="color:var(--red-bright)">No chart data available</span>'; return; }
+        if(!result||!result.timestamp?.length){
+            if(loadEl) loadEl.innerHTML='<span style="color:var(--red-bright)">No chart data available</span>';
+            return;
+        }
         if(loadEl) loadEl.style.display='none';
         const q=result.indicators.quote[0];
         const intra=['2m','5m','15m','30m','60m','90m','1h'].includes(this.cInterval);
@@ -1069,7 +1133,10 @@ async searchTicker(){
         }
         this.rawData.sort((a,b)=>typeof a.time==='string'?a.time<b.time?-1:1:a.time-b.time);
         this.applyData(); this.activeMA.forEach(p=>this.buildMA(p));
-    }catch(e){ if(loadEl) loadEl.innerHTML=`<span style="color:var(--red-bright)">${e.message}</span>`; }
+    }catch(e){
+        if(e.name==='AbortError') return;   // silently cancel — not an error
+        if(loadEl) loadEl.innerHTML=`<span style="color:var(--red-bright)">${e.message}</span>`;
+    }
 },
   applyData(){
     if(!this.mainSeries||!this.volSeries||!this.rawData.length) return;
