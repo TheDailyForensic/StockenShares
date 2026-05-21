@@ -48,27 +48,76 @@ def get_clean_name_mapping(ticker: str) -> str:
     if ticker == "^NSEI":      return "NIFTY 50"
     if ticker == "^BSESN":     return "SENSEX"
     if ticker == "^DJI":       return "DJI"
+    if ticker == "^GSPC":      return "S&P 500"
+    if ticker == "BTC-USD":    return "Bitcoin"
+    if ticker == "ETH-USD":    return "Ethereum"
+    if ticker == "SOL-USD":    return "Solana"
+    if ticker == "BNB-USD":    return "BNB"
+    if ticker == "GC=F":       return "Gold"
+    if ticker == "SI=F":       return "Silver"
+    if ticker == "CL=F":       return "Crude Oil"
+    if ticker == "NG=F":       return "Natural Gas"
     if ticker.endswith(".NS"): return ticker.replace(".NS", "")
     if ticker.endswith(".BO"): return ticker.replace(".BO", "")
+    if ticker.endswith(".L"):  return ticker.replace(".L", "")
+    if ticker.endswith(".DE"): return ticker.replace(".DE", "")
+    if ticker.endswith(".T"):  return ticker.replace(".T", "")
+    if ticker.endswith(".HK"): return ticker.replace(".HK", "")
+    if ticker.endswith(".AX"): return ticker.replace(".AX", "")
+    if ticker.endswith(".TO"): return ticker.replace(".TO", "")
     return ticker
 
 def is_inr_asset(ticker: str) -> bool:
     return any(x in ticker for x in [".NS", ".BO", "^NSEI", "^BSESN"])
 
+def is_yahoo_asset(ticker: str) -> bool:
+    t = ticker.upper()
+    return (t.endswith(".NS") or t.endswith(".BO") or t.endswith(".L") or
+            t.endswith(".DE") or t.endswith(".T") or t.endswith(".HK") or
+            t.endswith(".AX") or t.endswith(".TO") or t.endswith(".PA") or
+            t.endswith(".MI") or t.endswith("-USD") or t.endswith("=F") or
+            t.endswith("=X") or t.startswith("^"))
+
+def get_asset_currency(ticker: str) -> str:
+    t = ticker.upper()
+    if is_inr_asset(ticker):      return "INR"
+    if t.endswith(".L"):          return "GBP"
+    if t.endswith(".DE") or t.endswith(".PA") or t.endswith(".MI"): return "EUR"
+    if t.endswith(".T"):          return "JPY"
+    if t.endswith(".HK"):         return "HKD"
+    if t.endswith(".AX"):         return "AUD"
+    if t.endswith(".TO"):         return "CAD"
+    return "USD"
+
 def interpret_asset_query(user_input: str) -> dict:
     system_instruction = """
-You are a global financial data routing assistant. Take user inputs, fix typos, and return a standardised JSON object.
+You are a global financial data routing assistant. Fix typos and return standardised JSON.
 
 Rules:
-1. US stocks/ETFs (TSLA, AAPL, NVDA, MSFT, AMZN, etc.): provider "finnhub", currency "USD".
-2. Indian stocks on NSE: provider "yahoo", currency "INR", ticker appends ".NS" (e.g. RELIANCE.NS, TCS.NS, INFY.NS).
-3. Nasdaq Composite index: ticker "^IXIC", provider "yahoo", currency "USD".
-4. Nifty 50 index:         ticker "^NSEI", provider "yahoo", currency "INR".
-5. BSE Sensex:            ticker "^BSESN", provider "yahoo", currency "INR".
-6. Dow Jones:             ticker "^DJI",  provider "yahoo", currency "USD".
+1. US stocks/ETFs (TSLA, AAPL, NVDA, MSFT, GOOGL, etc.): provider "finnhub", currency "USD".
+2. Indian NSE stocks: provider "yahoo", currency "INR", append ".NS" (RELIANCE.NS, TCS.NS).
+3. Bitcoin/BTC: ticker "BTC-USD", provider "yahoo", currency "USD".
+4. Ethereum/ETH: ticker "ETH-USD", provider "yahoo", currency "USD".
+5. Other crypto (Solana, BNB, etc.): ticker "SOL-USD"/"BNB-USD" etc, provider "yahoo", currency "USD".
+6. Gold: ticker "GC=F", provider "yahoo", currency "USD".
+7. Silver: ticker "SI=F", provider "yahoo", currency "USD".
+8. Crude Oil/WTI: ticker "CL=F", provider "yahoo", currency "USD".
+9. Natural Gas: ticker "NG=F", provider "yahoo", currency "USD".
+10. Nifty 50: ticker "^NSEI", provider "yahoo", currency "INR".
+11. Sensex: ticker "^BSESN", provider "yahoo", currency "INR".
+12. Nasdaq: ticker "^IXIC", provider "yahoo", currency "USD".
+13. Dow Jones: ticker "^DJI", provider "yahoo", currency "USD".
+14. S&P 500: ticker "^GSPC", provider "yahoo", currency "USD".
+15. UK/LSE stocks: append ".L" (HSBA.L), provider "yahoo", currency "GBP".
+16. German stocks: append ".DE" (SAP.DE), provider "yahoo", currency "EUR".
+17. Japanese stocks: append ".T" (7203.T), provider "yahoo", currency "JPY".
+18. Hong Kong stocks: append ".HK", provider "yahoo", currency "HKD".
+19. Australian stocks: append ".AX", provider "yahoo", currency "AUD".
+20. Canadian stocks: append ".TO", provider "yahoo", currency "CAD".
+21. French stocks: append ".PA", provider "yahoo", currency "EUR".
 
 Respond ONLY with valid JSON:
-{"ticker":"STRING","provider":"finnhub or yahoo","currency":"USD or INR","cleanName":"STRING","description":"STRING","error":false}
+{"ticker":"STRING","provider":"finnhub or yahoo","currency":"USD/INR/GBP/EUR/JPY/etc","cleanName":"STRING","description":"STRING","error":false}
 """
     try:
         resp = groq_client.chat.completions.create(
@@ -82,9 +131,10 @@ Respond ONLY with valid JSON:
         return json.loads(resp.choices[0].message.content)
     except Exception:
         cleaned = user_input.strip().upper()
-        if any(cleaned.endswith(x) for x in [".NS", ".BO"]) or "^NSE" in cleaned or "^BSE" in cleaned:
-            return {"ticker": cleaned, "provider": "yahoo", "currency": "INR",
-                    "cleanName": cleaned, "description": "Indian Asset", "error": False}
+        if is_yahoo_asset(cleaned):
+            currency = get_asset_currency(cleaned)
+            return {"ticker": cleaned, "provider": "yahoo", "currency": currency,
+                    "cleanName": get_clean_name_mapping(cleaned), "description": "", "error": False}
         return {"ticker": cleaned, "provider": "finnhub", "currency": "USD",
                 "cleanName": cleaned, "description": "US Asset", "error": False}
 
@@ -121,7 +171,7 @@ def fetch_live_quote(ticker: str, provider: str):
             high  = float(hist["High"].iloc[-1])
             chg   = round(price - prev, 4)
             pct   = round((chg / prev) * 100, 4) if prev else 0
-            currency = "INR" if is_inr_asset(ticker) else "USD"
+            currency = get_asset_currency(ticker)
             return {
                 "symbol":   ticker,
                 "price":    price,
@@ -139,7 +189,6 @@ def get_user(username: str):
     return users_col.find_one({"username": username})
 
 def safe_user_view(user: dict) -> dict:
-    """Return a flat user object the frontend can assign directly to activeUser."""
     return {
         "username":    user["username"],
         "displayName": user["displayName"],
@@ -201,6 +250,11 @@ def get_session():
         if u:
             return jsonify({"authenticated": True, "user": safe_user_view(u)})
     return jsonify({"authenticated": False})
+
+# ── FX Rate ───────────────────────────────────────────────────────────────────
+@app.route("/api/fx/inr")
+def fx_inr():
+    return jsonify({"usdInrRate": get_live_inr_rate()})
 
 # ── Market Query ──────────────────────────────────────────────────────────────
 @app.route("/api/market/query")
@@ -304,6 +358,35 @@ def chart_yahoo():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ── Tape prices ───────────────────────────────────────────────────────────────
+@app.route("/api/tape")
+def tape_data():
+    tape_syms = [
+        ("AAPL","finnhub"),("TSLA","finnhub"),("NVDA","finnhub"),
+        ("MSFT","finnhub"),("AMZN","finnhub"),
+        ("RELIANCE.NS","yahoo"),("TCS.NS","yahoo"),("INFY.NS","yahoo"),
+        ("^NSEI","yahoo"),("^BSESN","yahoo"),
+        ("BTC-USD","yahoo"),("ETH-USD","yahoo"),
+        ("SOL-USD","yahoo"),("GC=F","yahoo"),
+    ]
+    results = {}
+    def _fetch(sym, prov):
+        q = fetch_live_quote(sym, prov)
+        return sym, q
+    try:
+        with ThreadPoolExecutor(max_workers=8) as ex:
+            futs = {ex.submit(_fetch, s, p): s for s, p in tape_syms}
+            for f in as_completed(futs, timeout=10):
+                try:
+                    sym, q = f.result()
+                    if q:
+                        results[sym] = {"price": q["price"], "pct": q["pct"], "currency": q["currency"]}
+                except Exception:
+                    pass
+    except Exception:
+        pass
+    return jsonify(results)
+
 # ── Portfolio ─────────────────────────────────────────────────────────────────
 @app.route("/api/user/portfolio")
 def user_portfolio():
@@ -323,7 +406,7 @@ def user_portfolio():
     invested_usd = 0.0
 
     for sym, h in holdings.items():
-        prov  = "yahoo" if is_inr_asset(sym) else "finnhub"
+        prov  = "yahoo" if is_yahoo_asset(sym) else "finnhub"
         quote = fetch_live_quote(sym, prov)
 
         shares         = h["shares"]
@@ -334,9 +417,25 @@ def user_portfolio():
             asset_currency   = quote["currency"]
         else:
             curr_price_local = avg_cost_local
-            asset_currency   = "INR" if is_inr_asset(sym) else "USD"
+            asset_currency   = get_asset_currency(sym)
 
-        divisor = inr_rate if asset_currency == "INR" else 1.0
+        # Convert to USD for portfolio math
+        if asset_currency == "INR":
+            divisor = inr_rate
+        elif asset_currency == "GBP":
+            divisor = 0.79  # approximate; ideally fetch live
+        elif asset_currency == "EUR":
+            divisor = 0.92
+        elif asset_currency == "JPY":
+            divisor = 149.0
+        elif asset_currency == "HKD":
+            divisor = 7.82
+        elif asset_currency == "AUD":
+            divisor = 1.53
+        elif asset_currency == "CAD":
+            divisor = 1.36
+        else:
+            divisor = 1.0
 
         avg_cost_usd     = avg_cost_local / divisor
         curr_price_usd   = curr_price_local / divisor
@@ -393,7 +492,24 @@ def trade_execute():
     holdings  = u.get("holdings", {})
     cash      = u["cash"]
     inr_rate  = get_live_inr_rate()
-    divisor   = inr_rate if is_inr_asset(symbol) else 1.0
+    
+    asset_currency = get_asset_currency(symbol)
+    if asset_currency == "INR":
+        divisor = inr_rate
+    elif asset_currency == "GBP":
+        divisor = 0.79
+    elif asset_currency == "EUR":
+        divisor = 0.92
+    elif asset_currency == "JPY":
+        divisor = 149.0
+    elif asset_currency == "HKD":
+        divisor = 7.82
+    elif asset_currency == "AUD":
+        divisor = 1.53
+    elif asset_currency == "CAD":
+        divisor = 1.36
+    else:
+        divisor = 1.0
 
     cost_local = round(qty * price, 6)
     cost_usd   = round(cost_local / divisor, 6)
@@ -427,17 +543,18 @@ def trade_execute():
         "price":       price,
         "sum":         cost_local,
         "sumUsd":      cost_usd,
-        "currency":    "INR" if is_inr_asset(symbol) else "USD"
+        "currency":    asset_currency
     }
-    
-    # Snapshot for leaderboard — updates on every trade, no live API calls needed
+
     snap_invested = 0.0
     for s, h in holdings.items():
-        snap_invested += h["shares"] * h["cost"] / (inr_rate if is_inr_asset(s) else 1.0)
-    
+        sc = get_asset_currency(s)
+        sd = inr_rate if sc == "INR" else 1.0
+        snap_invested += h["shares"] * h["cost"] / sd
+
     snap_net = round(cash + snap_invested, 2)
     snap_ret = round(((snap_net - STARTING_CASH) / STARTING_CASH) * 100.0, 4)
-    
+
     users_col.update_one(
         {"username": session["user"]},
         {
@@ -466,3 +583,6 @@ def leaderboard():
         })
     board.sort(key=lambda x: x["netValue"], reverse=True)
     return jsonify(board)
+
+if __name__ == "__main__":
+    app.run(debug=True)
